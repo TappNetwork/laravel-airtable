@@ -3,7 +3,7 @@
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tapp/laravel-airtable.svg?style=flat-square)](https://packagist.org/packages/tapp/laravel-airtable)
 [![Build Status](https://img.shields.io/travis/tapp/laravel-airtable/master.svg?style=flat-square)](https://travis-ci.org/tapp/laravel-airtable)
 [![StyleCI](https://github.styleci.io/repos/172130876/shield?branch=master)](https://github.styleci.io/repos/172130876)
-[![Quality Score](https://img.shields.io/scrutinizer/g/tapp/laravel-airtable.svg?style=flat-square)](https://scrutinizer-ci.com/g/tapp/laravel-airtable)
+[![Quality Score](https://scrutinizer-ci.com/g/TappNetwork/laravel-airtables/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TappNetwork/laravel-airtables/?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/tapp/laravel-airtable.svg?style=flat-square)](https://packagist.org/packages/tapp/laravel-airtable)
 
 A simple approach to interacting with Airtables.
