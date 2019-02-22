@@ -3,14 +3,11 @@
 namespace Tapp\Airtable;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use InvalidArgumentException;
-
 use Tapp\Airtable\Api\AirtableApiClient;
 
 class AirtableManager
 {
-
     /**
      * The application instance.
      *
