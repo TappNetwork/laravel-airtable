@@ -7,7 +7,7 @@
         "laravel"
     ],
     "homepage": "https://github.com/tapp/laravel-airtable",
-    "license": "MIT License (MIT)",
+    "license": "MIT",
     "type": "library",
     "authors": [
         {
