@@ -1,0 +1,56 @@
+{
+    "name": "tapp/laravel-airtable",
+    "description": "Laravel Airtable SDK",
+    "keywords": [
+        "tapp",
+        "airtable",
+        "laravel"
+    ],
+    "homepage": "https://github.com/tapp/laravel-airtable",
+    "license": "MIT License (MIT)",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Steve Williamson",
+            "email": "steve@tappnetwork.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1",
+        "guzzlehttp/guzzle": "~6.0",
+        "illuminate/support": "5.7.*"
+    },
+    "require-dev": {
+        "mockery/mockery": "^1.0",
+        "orchestra/testbench": "3.7.*",
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Tapp\\Airtable\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tapp\\Airtable\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Tapp\\Airtable\\AirtableServiceProvider"
+            ],
+            "aliases": {
+                "Airtable": "Tapp\\Airtable\\Facades\\AirtableFacade"
+            }
+        }
+    }
+}
