@@ -130,7 +130,7 @@ class AirtableManager
      * Resolve the given table.
      *
      * @param  string  $name
-     * @return \Tapp\Airtable
+     * @return Airtable
      *
      * @throws \InvalidArgumentException
      */
