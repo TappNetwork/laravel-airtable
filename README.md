@@ -16,10 +16,36 @@ You can install the package via composer:
 composer require tapp/laravel-airtable
 ```
 
+Publish the config file:
+
+```bash
+php artisan vendor:publish --provider="Tapp\Airtable\AirtableServiceProvider"
+```
+
+Define airtables account information:
+
+```bash
+AIRTABLE_KEY=
+AIRTABLE_BASE=
+AIRTABLE_TABLE=
+```
+
+* `AIRTABLE_KEY` can be retrieved here: https://airtable.com/account
+* `AIRTABLE_BASE` can be found here: https://airtable.com/api, select base then copy from URL: `https://airtable.com/[Base Is Here]/api/docs#curl/introduction`
+* `AIRTABLE_TABLE` can be found in the docs for the appropriate base, this is not case senstive. IE: `tasks`
+
 ## Usage
+
+Get all records from that table.
 
 ``` php
 Airtable::table('tasks')->get();
+```
+
+Get one record from the default table.
+
+``` php
+Airtable::find('id_string');
 ```
 
 ### Testing
