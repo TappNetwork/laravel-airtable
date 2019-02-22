@@ -2,10 +2,8 @@
 
 namespace Tapp\Airtable\Api;
 
-use Illuminate\Support\Str;
-use Tapp\Airtable\Resources\Record;
 use GuzzleHttp\Client;
-use Carbon\Carbon;
+use Illuminate\Support\Str;
 
 class AirtableApiClient implements ApiClient
 {
@@ -50,7 +48,7 @@ class AirtableApiClient implements ApiClient
             'query' => [
                 'pageSize' => $this->pageSize,
                 'maxRecords' => $this->maxRecords,
-            ]
+            ],
         ]);
 
         //TODO: loop through offset to get more than one page when more than 100 records exist
