@@ -21,7 +21,7 @@ Publish the config file:
 php artisan vendor:publish --provider="Tapp\Airtable\AirtableServiceProvider"
 ```
 
-Define airtables account information:
+Define airtables account information in .env:
 
 ```bash
 AIRTABLE_KEY=
