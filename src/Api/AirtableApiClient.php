@@ -60,7 +60,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl();
 
-        $params = $contents === null ? ['body' => ''] : ['json' => $contents];
+        $params = ['json' => ['fields' => (object) $contents]];
 
         return $this->jsonToObject($this->client->post($url, $params));
     }
@@ -69,7 +69,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = $contents === null ? ['body' => ''] : ['json' => $contents];
+        $params = ['json' => ['fields' => (object) $contents]];
 
         return $this->jsonToObject($this->client->put($url, $params));
     }
@@ -78,7 +78,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = $contents === null ? ['body' => ''] : ['json' => $contents];
+        $params = ['json' => ['fields' => (object) $contents]];
 
         return $this->jsonToObject($this->client->patch($url, $params));
     }
