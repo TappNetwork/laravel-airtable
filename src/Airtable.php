@@ -38,6 +38,11 @@ class Airtable
         return $this->api->delete($id);
     }
 
+    public function where($column, $value)
+    {
+        return $this->api->where($column, $value);
+    }
+
     public function get()
     {
         return $this->api->get();

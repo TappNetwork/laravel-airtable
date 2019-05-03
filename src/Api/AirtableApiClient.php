@@ -12,6 +12,7 @@ class AirtableApiClient implements ApiClient
     private $base;
     private $table;
 
+    private $filters = [];
     private $pageSize = 100;
     private $maxRecords = 100;
 
@@ -33,7 +34,14 @@ class AirtableApiClient implements ApiClient
         ]);
     }
 
-    public function get(string $id = null)
+    public function where($column, $value)
+    {
+        $this->filters []= "{{$column}}=\"{$value}\"";
+
+        return $this;
+    }
+
+    public function get(?string $id = null)
     {
         $url = $this->getEndpointUrl($id);
 
@@ -105,7 +113,9 @@ class AirtableApiClient implements ApiClient
             return collect([]);
         }
 
-        return collect(json_decode($body));
+        $object = json_decode($body);
+
+        return isset($object->records) ? collect($object->records) : $object;
     }
 
     public function jsonToArray($response)
@@ -122,20 +132,25 @@ class AirtableApiClient implements ApiClient
     protected function getEndpointUrl(?string $id = null): string
     {
         if ($id) {
-            $url = '/v0/?/?/?';
+            $url = '/v0/~/~/~';
 
-            return Str::replaceArray('?', [
+            return Str::replaceArray('~', [
                 $this->base,
                 $this->table,
                 $id,
             ], $url);
         }
 
-        $url = '/v0/?/?';
+        $parameters = http_build_query([
+            'filterByFormula' => implode('&', $this->filters),
+        ]);
 
-        return Str::replaceArray('?', [
+        $url = '/v0/~/~?~';
+
+        return Str::replaceArray('~', [
             $this->base,
             $this->table,
+            $parameters
         ], $url);
     }
 }
