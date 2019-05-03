@@ -36,7 +36,7 @@ class AirtableApiClient implements ApiClient
 
     public function where($column, $value)
     {
-        $this->filters []= "{{$column}}=\"{$value}\"";
+        $this->filters [] = "{{$column}}=\"{$value}\"";
 
         return $this;
     }
@@ -150,7 +150,7 @@ class AirtableApiClient implements ApiClient
         return Str::replaceArray('~', [
             $this->base,
             $this->table,
-            $parameters
+            $parameters,
         ], $url);
     }
 }
