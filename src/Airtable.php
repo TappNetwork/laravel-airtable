@@ -79,7 +79,7 @@ class Airtable
 
     }
 
-    public function createOrUpdate(array $idData, array $updateData = [])
+    public function updateOrCreate(array $idData, array $updateData = [])
     {
         foreach ($idData as $key => $value) {
             $this->where($key, $value);
