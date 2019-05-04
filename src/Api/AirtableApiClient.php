@@ -16,21 +16,31 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token)
+    public function __construct($base, $table, $access_token, Client $client = null)
     {
         $this->base = $base;
         $this->table = $table;
-        $this->client = $this->buildClient($access_token);
+        $this->client = $client ?? $this->buildClient($access_token) ;
     }
 
     private function buildClient($access_token)
     {
+        $stack = \GuzzleHttp\HandlerStack::create();
+        $stack->push(
+            \GuzzleHttp\Middleware::log(
+                new \Monolog\Logger('Logger'),
+                new \GuzzleHttp\MessageFormatter('{request} >>> {res_body}')
+            )
+        );
+
         return new Client([
             'base_uri' => 'https://api.airtable.com',
             'headers' => [
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
+            // uncomment to log requests
+            'handler' => $stack,
         ]);
     }
 
@@ -41,11 +51,56 @@ class AirtableApiClient implements ApiClient
         return $this;
     }
 
+    public function table($table)
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    public function firstOrCreate(array $idData, array $createData = [])
+    {
+        foreach ($idData as $key => $value) {
+            $this->where($key, $value);
+        }
+
+        $results = $this->get();
+
+        // first
+        if ($results->isNotEmpty()) {
+            return $results->first();
+        }
+
+        // create
+        $data = array_merge($idData, $createData);
+
+        return $this->post($data);
+    }
+
+    public function createOrUpdate(array $idData, array $updateData = [])
+    {
+        foreach ($idData as $key => $value) {
+            $this->where($key, $value);
+        }
+
+        $results = $this->get();
+
+        // first
+        if ($results->isNotEmpty()) {
+            return $results->first();
+        }
+
+        // create
+        $data = array_merge($idData, $createData);
+
+        return $this->post($data);
+    }
+
     public function get(?string $id = null)
     {
         $url = $this->getEndpointUrl($id);
 
-        return $this->jsonToObject($this->client->get($url));
+        return $this->jsonToArray($this->client->get($url));
     }
 
     public function getAllPages()
@@ -70,7 +125,7 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->post($url, $params));
+        return $this->jsonToArray($this->client->post($url, $params));
     }
 
     public function put(string $id, $contents = null)
@@ -141,16 +196,19 @@ class AirtableApiClient implements ApiClient
             ], $url);
         }
 
-        $parameters = http_build_query([
-            'filterByFormula' => implode('&', $this->filters),
-        ]);
+        $url = '/v0/~/~';
 
-        $url = '/v0/~/~?~';
-
-        return Str::replaceArray('~', [
+        $url = Str::replaceArray('~', [
             $this->base,
-            $this->table,
-            $parameters,
+            $this->table
         ], $url);
+
+        if ($this->filters) {
+            $url .= '?' . http_build_query([
+                'filterByFormula' => implode('&', $this->filters),
+            ]);
+        }
+
+        return $url;
     }
 }

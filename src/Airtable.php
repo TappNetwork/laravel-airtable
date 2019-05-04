@@ -43,6 +43,16 @@ class Airtable
         return $this->api->where($column, $value);
     }
 
+    public function firstOrCreate(array $idData, array $createData = [])
+    {
+        return $this->api->firstOrCreate($idData, $createData);
+    }
+
+    public function createOrUpdate(array $idData, array $updateData = [])
+    {
+        return $this->api->createOrUpdate($idData, $updateData);
+    }
+
     public function get()
     {
         return $this->api->get();
