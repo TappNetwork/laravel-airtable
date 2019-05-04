@@ -44,9 +44,9 @@ class AirtableApiClient implements ApiClient
         ]);
     }
 
-    public function where($column, $value)
+    public function addFilter($column, $operation, $value)
     {
-        $this->filters [] = "{{$column}}=\"{$value}\"";
+        $this->filters [] = "{{$column}}{$operation}\"{$value}\"";
 
         return $this;
     }
@@ -58,49 +58,11 @@ class AirtableApiClient implements ApiClient
         return $this;
     }
 
-    public function firstOrCreate(array $idData, array $createData = [])
-    {
-        foreach ($idData as $key => $value) {
-            $this->where($key, $value);
-        }
-
-        $results = $this->get();
-
-        // first
-        if ($results->isNotEmpty()) {
-            return $results->first();
-        }
-
-        // create
-        $data = array_merge($idData, $createData);
-
-        return $this->post($data);
-    }
-
-    public function createOrUpdate(array $idData, array $updateData = [])
-    {
-        foreach ($idData as $key => $value) {
-            $this->where($key, $value);
-        }
-
-        $results = $this->get();
-
-        // first
-        if ($results->isNotEmpty()) {
-            return $results->first();
-        }
-
-        // create
-        $data = array_merge($idData, $createData);
-
-        return $this->post($data);
-    }
-
     public function get(?string $id = null)
     {
         $url = $this->getEndpointUrl($id);
 
-        return $this->jsonToArray($this->client->get($url));
+        return $this->decodeResponse($this->client->get($url));
     }
 
     public function getAllPages()
@@ -116,7 +78,7 @@ class AirtableApiClient implements ApiClient
 
         //TODO: loop through offset to get more than one page when more than 100 records exist
 
-        return $this->jsonToObject($response);
+        return $this->decodeResponse($response);
     }
 
     public function post($contents = null)
@@ -125,7 +87,7 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToArray($this->client->post($url, $params));
+        return $this->decodeResponse($this->client->post($url, $params));
     }
 
     public function put(string $id, $contents = null)
@@ -134,7 +96,7 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->put($url, $params));
+        return $this->decodeResponse($this->client->put($url, $params));
     }
 
     public function patch(string $id, $contents = null)
@@ -143,14 +105,14 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->patch($url, $params));
+        return $this->decodeResponse($this->client->patch($url, $params));
     }
 
     public function delete(string $id)
     {
         $url = $this->getEndpointUrl($id);
 
-        return $this->jsonToObject($this->client->delete($url));
+        return $this->decodeResponse($this->client->delete($url));
     }
 
     public function responseToJson($response)
@@ -160,7 +122,7 @@ class AirtableApiClient implements ApiClient
         return $body;
     }
 
-    public function jsonToObject($response)
+    public function responseToCollection($response)
     {
         $body = (string) $response->getBody();
 
@@ -173,7 +135,7 @@ class AirtableApiClient implements ApiClient
         return isset($object->records) ? collect($object->records) : $object;
     }
 
-    public function jsonToArray($response)
+    public function decodeResponse($response)
     {
         $body = (string) $response->getBody();
 
