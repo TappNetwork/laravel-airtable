@@ -48,20 +48,12 @@ class ClientTest extends TestCase
         $this->assertEquals($expectedResponse['fields'], $actualResponse['fields']);
     }
 
-    private function build_client($mockGuzzle)
+    private function build_client($mockGuzzle = null)
     {
-        if (getenv('TEST_AIRTABLE_API')) {
-            return new Client(
-                env('AIRTABLE_BASE'),
-                env('AIRTABLE_TABLE'),
-                env('AIRTABLE_KEY')
-            );
-        }
-
         return new Client(
-            'test_base',
-            'test_table',
-            'test_key',
+            $mockGuzzle ? 'test_base' : env('AIRTABLE_BASE', 'test_base'),
+            $mockGuzzle ? 'test_table' : env('AIRTABLE_TABLE', 'test_table'),
+            $mockGuzzle ? 'test_key' : env('AIRTABLE_KEY', 'test_key'),
             $mockGuzzle
         );
     }
