@@ -150,7 +150,13 @@ class AirtableManager
         $base = $this->app['config']['airtable.base'];
         $access_token = $this->app['config']['airtable.key'];
 
-        $client = new AirtableApiClient($base, $config, $access_token);
+        if ($this->app['config']['airtable.log-http']) {
+            $httpLogFormat = $this->app['config']['airtable.log-http-format'];
+        } else {
+            $httpLogFormat = null;
+        }
+
+        $client = new AirtableApiClient($base, $config, $access_token, $httpLogFormat);
 
         return new Airtable($client, $config);
     }
@@ -163,7 +169,7 @@ class AirtableManager
      */
     protected function getConfig($name)
     {
-        return $this->app['config']["airtable.tables.{$name}"];
+        return $this->app['config']["airtable.tables.{$name}.name"];
     }
 
     /**

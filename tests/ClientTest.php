@@ -47,17 +47,24 @@ class ClientTest extends TestCase
 
     private function build_client($mockGuzzle = null)
     {
+        if (env('LOG_HTTP')) {
+            $httpLogFormat = env('LOG_HTTP_FORMAT', '{request} >>> {res_body}');
+        } else {
+            $httpLogFormat = null;
+        }
+
         return new Client(
             $mockGuzzle ? 'test_base' : env('AIRTABLE_BASE', 'test_base'),
             $mockGuzzle ? 'test_table' : env('AIRTABLE_TABLE', 'test_table'),
             $mockGuzzle ? 'test_key' : env('AIRTABLE_KEY', 'test_key'),
-            $mockGuzzle
+            $mockGuzzle,
+            $httpLogFormat
         );
     }
 
     private function mock_guzzle_request($expectedResponse, $expectedEndpoint, $expectedParams)
     {
-        if (getenv('TEST_AIRTABLE_API')) {
+        if (env('TEST_AIRTABLE_API')) {
             return;
         }
 

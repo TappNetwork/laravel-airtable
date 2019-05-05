@@ -16,30 +16,33 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token, Client $client = null)
+    public function __construct($base, $table, $access_token, Client $client = null, $httpLogFormat = null)
     {
         $this->base = $base;
         $this->table = $table;
-        $this->client = $client ?? $this->buildClient($access_token);
+
+        $stack = \GuzzleHttp\HandlerStack::create();
+
+        if ($httpLogFormat) {
+            $stack->push(
+                \GuzzleHttp\Middleware::log(
+                    new \Monolog\Logger('Logger'),
+                    new \GuzzleHttp\MessageFormatter($httpLogFormat)
+                )
+            );
+        }
+
+        $this->client = $client ?? $this->buildClient($access_token, $stack);
     }
 
-    private function buildClient($access_token)
+    private function buildClient($access_token, $stack)
     {
-        $stack = \GuzzleHttp\HandlerStack::create();
-        $stack->push(
-            \GuzzleHttp\Middleware::log(
-                new \Monolog\Logger('Logger'),
-                new \GuzzleHttp\MessageFormatter('{request} >>> {res_body}')
-            )
-        );
-
         return new Client([
             'base_uri' => 'https://api.airtable.com',
             'headers' => [
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
-            // uncomment to log requests
             'handler' => $stack,
         ]);
     }
