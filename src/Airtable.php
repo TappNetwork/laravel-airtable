@@ -37,6 +37,7 @@ class Airtable
     {
         return $this->api->delete($id);
     }
+
     public function get()
     {
         return $this->toCollection($this->api->get());
@@ -76,7 +77,6 @@ class Airtable
         $data = array_merge($idData, $createData);
 
         return $this->create($data);
-
     }
 
     public function updateOrCreate(array $idData, array $updateData = [])

@@ -20,7 +20,7 @@ class AirtableApiClient implements ApiClient
     {
         $this->base = $base;
         $this->table = $table;
-        $this->client = $client ?? $this->buildClient($access_token) ;
+        $this->client = $client ?? $this->buildClient($access_token);
     }
 
     private function buildClient($access_token)
@@ -162,11 +162,11 @@ class AirtableApiClient implements ApiClient
 
         $url = Str::replaceArray('~', [
             $this->base,
-            $this->table
+            $this->table,
         ], $url);
 
         if ($this->filters) {
-            $url .= '?' . http_build_query([
+            $url .= '?' .http_build_query([
                 'filterByFormula' => implode('&', $this->filters),
             ]);
         }

@@ -2,13 +2,10 @@
 
 namespace Tapp\Airtable\Test;
 
-use Tapp\Airtable\Api\AirtableApiClient as Client;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\StreamInterface;
 use GuzzleHttp\Client as GuzzleClient;
-use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use GuzzleHttp\Exception\ClientException;
+use Tapp\Airtable\Api\AirtableApiClient as Client;
 
 class ClientTest extends TestCase
 {
@@ -61,7 +58,7 @@ class ClientTest extends TestCase
     private function mock_guzzle_request($expectedResponse, $expectedEndpoint, $expectedParams)
     {
         if (getenv('TEST_AIRTABLE_API')) {
-            return null;
+            return;
         }
 
         $mockResponse = $this->getMockBuilder(ResponseInterface::class)
