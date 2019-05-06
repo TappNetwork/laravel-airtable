@@ -60,7 +60,7 @@ class ClientTest extends TestCase
             [
                 'json' => [
                     'filterByFormula' => '{Company Name}="Tapp Network"',
-                ]
+                ],
             ]
         );
 

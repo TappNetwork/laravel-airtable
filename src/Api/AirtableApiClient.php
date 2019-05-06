@@ -16,7 +16,7 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token,  $httpLogFormat = null, Client $client = null)
+    public function __construct($base, $table, $access_token, $httpLogFormat = null, Client $client = null)
     {
         $this->base = $base;
         $this->table = $table;
@@ -169,7 +169,7 @@ class AirtableApiClient implements ApiClient
         ], $url);
 
         if ($this->filters) {
-            $url .= '?' .http_build_query([
+            $url .= '?'.http_build_query([
                 'filterByFormula' => implode('&', $this->filters),
             ]);
         }
