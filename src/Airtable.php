@@ -85,7 +85,7 @@ class Airtable
             $item = $results->first();
 
             //update
-            return $this->update($item->id, $updateData);
+            return $this->update($item['id'], $updateData);
         }
 
         // create
