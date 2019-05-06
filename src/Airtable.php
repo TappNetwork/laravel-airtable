@@ -6,15 +6,8 @@ class Airtable
 {
     private $api;
 
-    /** @var string */
-    protected $base;
-
-    /** @var string */
-    protected $table;
-
-    public function __construct($client, $table)
+    public function __construct($client)
     {
-        $this->table = $table;
         $this->api = $client;
     }
 
@@ -50,7 +43,7 @@ class Airtable
 
     public function table($table)
     {
-        $this->api->table($table);
+        $this->api->setTable($table);
 
         return $this;
     }

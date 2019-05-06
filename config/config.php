@@ -47,4 +47,6 @@ return [
 
     ],
 
+    'log_http' => env('AIRTABLE_LOG_HTTP', false),
+    'log_http_format' => env('AIRTABLE_LOG_HTTP_FORMAT', '{request}'),
 ];

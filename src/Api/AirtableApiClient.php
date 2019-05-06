@@ -16,7 +16,7 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token, Client $client = null, $httpLogFormat = null)
+    public function __construct($base, $table, $access_token,  $httpLogFormat = null, Client $client = null)
     {
         $this->base = $base;
         $this->table = $table;
@@ -54,7 +54,7 @@ class AirtableApiClient implements ApiClient
         return $this;
     }
 
-    public function table($table)
+    public function setTable($table)
     {
         $this->table = $table;
 

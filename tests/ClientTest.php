@@ -39,10 +39,40 @@ class ClientTest extends TestCase
 
         $client = $this->build_client($mockGuzzle);
 
-        $actualResponse = $client->table('companies')
+        $actualResponse = $client->setTable('companies')
             ->post($postData);
 
         $this->assertEquals($expectedResponse['fields'], $actualResponse['fields']);
+    }
+
+    /** @test */
+    public function it_can_search()
+    {
+        $expectedResponse = [
+            'id' => 'randomlygenerated',
+            'fields' => ['Company Name' => 'Tapp Network'],
+            'createdTime' => 'timestamp',
+        ];
+
+        $mockGuzzle = $this->mock_guzzle_request(
+            json_encode($expectedResponse),
+            '/v0/test_base/companies',
+            [
+                'json' => [
+                    'filterByFormula' => '{Company Name}="Tapp Network"',
+                ]
+            ]
+        );
+
+        $client = $this->build_client($mockGuzzle);
+
+        $actualResponse = $client->setTable('companies')
+            ->addFilter('Company Name', '=', 'Tapp Network')
+            ->get();
+
+        $first = $actualResponse['records'][0];
+
+        $this->assertEquals($expectedResponse['fields'], $first['fields']);
     }
 
     private function build_client($mockGuzzle = null)
@@ -57,12 +87,12 @@ class ClientTest extends TestCase
             $mockGuzzle ? 'test_base' : env('AIRTABLE_BASE', 'test_base'),
             $mockGuzzle ? 'test_table' : env('AIRTABLE_TABLE', 'test_table'),
             $mockGuzzle ? 'test_key' : env('AIRTABLE_KEY', 'test_key'),
-            $mockGuzzle,
-            $httpLogFormat
+            $httpLogFormat,
+            $mockGuzzle
         );
     }
 
-    private function mock_guzzle_request($expectedResponse, $expectedEndpoint, $expectedParams)
+    private function mock_guzzle_request($expectedResponse, $expectedEndpoint, $expectedParams = [])
     {
         if (env('TEST_AIRTABLE_API')) {
             return;
