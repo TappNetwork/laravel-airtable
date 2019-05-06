@@ -1,6 +1,6 @@
 <?php
 
-namespace Tapp\Airtable\Test;
+namespace Tapp\Airtable\Tests;
 
 use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client as GuzzleClient;
