@@ -3,3 +3,5 @@ composer.lock
 docs
 vendor
 coverage
+.env
+.ac-php-conf.json

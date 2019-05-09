@@ -6,15 +6,8 @@ class Airtable
 {
     private $api;
 
-    /** @var string */
-    protected $base;
-
-    /** @var string */
-    protected $table;
-
-    public function __construct($client, $table)
+    public function __construct($client)
     {
-        $this->table = $table;
         $this->api = $client;
     }
 
@@ -40,11 +33,69 @@ class Airtable
 
     public function get()
     {
-        return $this->api->get();
+        return $this->toCollection($this->api->get());
     }
 
     public function all()
     {
-        return $this->api->getAllPages();
+        return $this->toCollection($this->api->getAllPages());
+    }
+
+    public function table($table)
+    {
+        $this->api->setTable($table);
+
+        return $this;
+    }
+
+    public function where($column, $value)
+    {
+        return $this->api->addFilter($column, '=', $value);
+    }
+
+    public function firstOrCreate(array $idData, array $createData = [])
+    {
+        foreach ($idData as $key => $value) {
+            $this->where($key, $value);
+        }
+
+        $results = $this->get();
+
+        // first
+        if ($results->isNotEmpty()) {
+            return $results->first();
+        }
+
+        // create
+        $data = array_merge($idData, $createData);
+
+        return $this->create($data);
+    }
+
+    public function updateOrCreate(array $idData, array $updateData = [])
+    {
+        foreach ($idData as $key => $value) {
+            $this->where($key, $value);
+        }
+
+        $results = $this->get();
+
+        // first
+        if ($results->isNotEmpty()) {
+            $item = $results->first();
+
+            //update
+            return $this->update($item['id'], $updateData);
+        }
+
+        // create
+        $data = array_merge($idData, $updateData);
+
+        return $this->create($data);
+    }
+
+    private function toCollection($object)
+    {
+        return isset($object['records']) ? collect($object['records']) : $object;
     }
 }

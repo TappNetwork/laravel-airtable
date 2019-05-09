@@ -35,16 +35,34 @@ AIRTABLE_TABLE=
 
 ## Usage
 
-Get all records from that table.
-
+#### Get all records from that table.
 ``` php
 Airtable::table('tasks')->get();
 ```
 
-Get one record from the default table.
-
+#### Get one record from the default table.
 ``` php
 Airtable::find('id_string');
+
+```
+
+#### Filter records
+``` php
+Airtable::where('name', 'myName')->get();
+```
+
+#### First or Create
+- First argument will be used for finding existing
+- Second argument is additional data to save if no results are found and we are creating (will not be saved used if item already exists)
+``` php
+Airtable::firstOrCreate(['name' => 'myName'], ['field' => 'myField']);
+```
+
+#### Update or Create
+- First argument will be used to find existing
+- Second argument is additional data to save when we create or update
+``` php
+Airtable::createOrUpdate(['name' => 'myName'], ['field' => 'myField']);
 ```
 
 ### Testing

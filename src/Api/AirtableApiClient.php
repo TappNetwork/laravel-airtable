@@ -12,17 +12,30 @@ class AirtableApiClient implements ApiClient
     private $base;
     private $table;
 
+    private $filters = [];
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token)
+    public function __construct($base, $table, $access_token, $httpLogFormat = null, Client $client = null)
     {
         $this->base = $base;
         $this->table = $table;
-        $this->client = $this->buildClient($access_token);
+
+        $stack = \GuzzleHttp\HandlerStack::create();
+
+        if ($httpLogFormat) {
+            $stack->push(
+                \GuzzleHttp\Middleware::log(
+                    new \Monolog\Logger('Logger'),
+                    new \GuzzleHttp\MessageFormatter($httpLogFormat)
+                )
+            );
+        }
+
+        $this->client = $client ?? $this->buildClient($access_token, $stack);
     }
 
-    private function buildClient($access_token)
+    private function buildClient($access_token, $stack)
     {
         return new Client([
             'base_uri' => 'https://api.airtable.com',
@@ -30,14 +43,29 @@ class AirtableApiClient implements ApiClient
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
+            'handler' => $stack,
         ]);
     }
 
-    public function get(string $id = null)
+    public function addFilter($column, $operation, $value)
+    {
+        $this->filters [] = "{{$column}}{$operation}\"{$value}\"";
+
+        return $this;
+    }
+
+    public function setTable($table)
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    public function get(?string $id = null)
     {
         $url = $this->getEndpointUrl($id);
 
-        return $this->jsonToObject($this->client->get($url));
+        return $this->decodeResponse($this->client->get($url));
     }
 
     public function getAllPages()
@@ -53,7 +81,7 @@ class AirtableApiClient implements ApiClient
 
         //TODO: loop through offset to get more than one page when more than 100 records exist
 
-        return $this->jsonToObject($response);
+        return $this->decodeResponse($response);
     }
 
     public function post($contents = null)
@@ -62,7 +90,7 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->post($url, $params));
+        return $this->decodeResponse($this->client->post($url, $params));
     }
 
     public function put(string $id, $contents = null)
@@ -71,7 +99,7 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->put($url, $params));
+        return $this->decodeResponse($this->client->put($url, $params));
     }
 
     public function patch(string $id, $contents = null)
@@ -80,14 +108,14 @@ class AirtableApiClient implements ApiClient
 
         $params = ['json' => ['fields' => (object) $contents]];
 
-        return $this->jsonToObject($this->client->patch($url, $params));
+        return $this->decodeResponse($this->client->patch($url, $params));
     }
 
     public function delete(string $id)
     {
         $url = $this->getEndpointUrl($id);
 
-        return $this->jsonToObject($this->client->delete($url));
+        return $this->decodeResponse($this->client->delete($url));
     }
 
     public function responseToJson($response)
@@ -97,7 +125,7 @@ class AirtableApiClient implements ApiClient
         return $body;
     }
 
-    public function jsonToObject($response)
+    public function responseToCollection($response)
     {
         $body = (string) $response->getBody();
 
@@ -105,10 +133,12 @@ class AirtableApiClient implements ApiClient
             return collect([]);
         }
 
-        return collect(json_decode($body));
+        $object = json_decode($body);
+
+        return isset($object->records) ? collect($object->records) : $object;
     }
 
-    public function jsonToArray($response)
+    public function decodeResponse($response)
     {
         $body = (string) $response->getBody();
 
@@ -122,20 +152,28 @@ class AirtableApiClient implements ApiClient
     protected function getEndpointUrl(?string $id = null): string
     {
         if ($id) {
-            $url = '/v0/?/?/?';
+            $url = '/v0/~/~/~';
 
-            return Str::replaceArray('?', [
+            return Str::replaceArray('~', [
                 $this->base,
                 $this->table,
                 $id,
             ], $url);
         }
 
-        $url = '/v0/?/?';
+        $url = '/v0/~/~';
 
-        return Str::replaceArray('?', [
+        $url = Str::replaceArray('~', [
             $this->base,
             $this->table,
         ], $url);
+
+        if ($this->filters) {
+            $url .= '?'.http_build_query([
+                'filterByFormula' => implode('&', $this->filters),
+            ]);
+        }
+
+        return $url;
     }
 }

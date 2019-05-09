@@ -36,14 +36,12 @@ class AirtableManager
     /**
      * Get a airtable table instance.
      *
-     * @param  string  $name
+     * @param  string  $table
      * @return \Airtable\Table
      */
-    public function table($name = null)
+    public function table(string $table)
     {
-        $name = $name ?: $this->getDefaultTable();
-
-        return $this->tables[$name] = $this->get($name);
+        return $this->resolve($table);
     }
 
     /**
@@ -92,41 +90,6 @@ class AirtableManager
     }
 
     /**
-     * Return all of the created connections.
-     *
-     * @return array
-     */
-    public function getTables()
-    {
-        return $this->tables;
-    }
-
-    /**
-     * Set the given table instance.
-     *
-     * @param  string  $name
-     * @param  mixed  $table
-     * @return $this
-     */
-    public function set($name, $table)
-    {
-        $this->tables[$name] = $table;
-
-        return $this;
-    }
-
-    /**
-     * Attempt to get the table from the local cache.
-     *
-     * @param  string  $name
-     * @return \Tapp\Airtable
-     */
-    protected function get($name)
-    {
-        return $this->tables[$name] ?? $this->resolve($name);
-    }
-
-    /**
      * Resolve the given table.
      *
      * @param  string  $name
@@ -139,20 +102,26 @@ class AirtableManager
         $config = $this->getConfig($name);
 
         if ($config) {
-            return $this->createAirtable($config);
+            return $this->createAirtable($config['name']);
         } else {
             throw new InvalidArgumentException("Table [{$name}] is not configured.");
         }
     }
 
-    protected function createAirtable($config)
+    protected function createAirtable($table)
     {
         $base = $this->app['config']['airtable.base'];
         $access_token = $this->app['config']['airtable.key'];
 
-        $client = new AirtableApiClient($base, $config, $access_token);
+        if ($this->app['config']['airtable.log_http']) {
+            $httpLogFormat = $this->app['config']['airtable.log_http_format'];
+        } else {
+            $httpLogFormat = null;
+        }
 
-        return new Airtable($client, $config);
+        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat);
+
+        return new Airtable($client, $table);
     }
 
     /**
