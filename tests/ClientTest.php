@@ -2,8 +2,8 @@
 
 namespace Tapp\Airtable\Tests;
 
-use PHPUnit\Framework\TestCase;
 use GuzzleHttp\Client as GuzzleClient;
+use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Tapp\Airtable\Api\AirtableApiClient as Client;
 
