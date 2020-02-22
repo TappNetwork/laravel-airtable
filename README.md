@@ -62,7 +62,7 @@ Airtable::firstOrCreate(['name' => 'myName'], ['field' => 'myField']);
 - First argument will be used to find existing
 - Second argument is additional data to save when we create or update
 ``` php
-Airtable::createOrUpdate(['name' => 'myName'], ['field' => 'myField']);
+Airtable::updateOrCreate(['name' => 'myName'], ['field' => 'myField']);
 ```
 
 ### Testing
