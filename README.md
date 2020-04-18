@@ -33,7 +33,32 @@ AIRTABLE_TABLE=
 * `AIRTABLE_BASE` can be found here: https://airtable.com/api, select base then copy from URL: `https://airtable.com/[Base Is Here]/api/docs#curl/introduction`
 * `AIRTABLE_TABLE` can be found in the docs for the appropriate base, this is not case senstive. IE: `tasks`
 
+## Example Config
+
+If you need to support multiple tables, add them to the tables config in the config/airtable.php
+
+```
+...
+    'tables' => [
+
+        'default' => [
+            'name' => env('AIRTABLE_TABLE', 'Main'),
+        ],
+
+        'companies' => [
+            'name' => env('AIRTABLE_COMPANY_TABLE', 'Companies'),
+        ],
+        ...
+    ],
+...
+```
+
 ## Usage
+
+### Import the facade in your class.
+```php
+use Airtable;
+```
 
 #### Get all records from that table.
 ``` php
@@ -43,7 +68,6 @@ Airtable::table('tasks')->get();
 #### Get one record from the default table.
 ``` php
 Airtable::find('id_string');
-
 ```
 
 #### Filter records
@@ -63,6 +87,8 @@ Airtable::firstOrCreate(['name' => 'myName'], ['field' => 'myField']);
 - Second argument is additional data to save when we create or update
 ``` php
 Airtable::updateOrCreate(['name' => 'myName'], ['field' => 'myField']);
+
+Airtable::table('companies')->firstOrCreate(['Company Name' => $team->name]);
 ```
 
 ### Testing
