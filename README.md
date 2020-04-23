@@ -71,12 +71,12 @@ Airtable::find('id_string');
 ```
 
 #### Filter records
-- First argument will be column name
-- Second argument will be value
-- Third optional argument will be the operation defaults to equal if not provided
+- First argument is the column name
+- Second argument is the operator or the value if you want to use equal '=' as an operator.
+- Third argument is the value of the filter
 ``` php
-Airtable::where('name', 'myName')->get();
-Airtable::where('id', '5','>')->get();
+Airtable::where('id', '5')->get();
+Airtable::where('id', '>', '5')->get();
 ```
 
 #### First or Create
