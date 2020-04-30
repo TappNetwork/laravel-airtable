@@ -48,9 +48,13 @@ class Airtable
         return $this;
     }
 
-    public function where($column, $value)
+    public function where($column, $operator, $value = null)
     {
-        return $this->api->addFilter($column, '=', $value);
+        if (is_null($value)) {
+            return $this->api->addFilter($column, '=', $operator);
+        } else {
+            return $this->api->addFilter($column, $operator, $value);
+        }
     }
 
     public function firstOrCreate(array $idData, array $createData = [])
