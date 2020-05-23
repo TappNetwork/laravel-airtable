@@ -95,6 +95,23 @@ Airtable::updateOrCreate(['name' => 'myName'], ['field' => 'myField']);
 Airtable::table('companies')->firstOrCreate(['Company Name' => $team->name]);
 ```
 
+#### Update 
+- First argument will be the id
+- Second argument is the whole record including the updated fields
+
+**Note:** Update is destructive and clear all unspecified cell values if you did not provide a value for them. use PATCH up update specified fields
+
+``` php
+Airtable::table('companies')->update('rec5N7fr8GhDtdNxx', [ 'name' => 'Google', 'country' => 'US']);
+```
+
+#### Patch
+- First argument will be the id
+- Second argument is the field you would like to update
+``` php
+Airtable::table('companies')->patch('rec5N7fr8GhDtdNxx', ['country' => 'US']);
+```
+
 ### Testing
 
 ``` bash

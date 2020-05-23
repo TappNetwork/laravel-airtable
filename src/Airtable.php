@@ -26,6 +26,11 @@ class Airtable
         return $this->api->put($id, $data);
     }
 
+    public function patch(string $id, $data)
+    {
+        return $this->api->patch($id, $data);
+    }
+
     public function destroy(string $id)
     {
         return $this->api->delete($id);
