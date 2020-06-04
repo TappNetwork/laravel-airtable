@@ -98,7 +98,6 @@ class AirtableApiClient implements ApiClient
             } else {
                 $offset = false;
             }
-
         } while ($offset);
 
         return collect($records);
