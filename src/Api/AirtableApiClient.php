@@ -82,15 +82,15 @@ class AirtableApiClient implements ApiClient
                 $query['offset'] = $offset;
             }
 
-        $response = $this->client->get($url, [
+            $response = $this->client->get($url, [
                 'query' => $query,
-        ]);
+            ]);
 
             $response = $this->decodeResponse($response);
 
             if (isset($response['records'])) {
                 $records = array_merge($response['records'], $records);
-    }
+            }
 
             if (isset($response['offset'])) {
                 $offset = $response['offset'];
