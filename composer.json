@@ -19,7 +19,7 @@
         "php": "^7.1",
         "guzzlehttp/guzzle": "~6.0",
         "illuminate/support": "5.7.* || 5.8.* || 6.* || 7.*",
-        "symfony/dotenv": "^5.1"
+        "symfony/dotenv": "^4.2 || ^5.1"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",
