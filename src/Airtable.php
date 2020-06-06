@@ -41,9 +41,13 @@ class Airtable
         return $this->toCollection($this->api->get());
     }
 
-    public function all()
+    // There is delay between requests to avoid 429 error
+    // 1000000 = 1 second
+    // "The API is limited to 5 requests per second per base. If you exceed this rate, you will receive a 429 status code
+    //  and will need to wait 30 seconds before subsequent requests will succeed."
+    public function all($delayBetweenRequestsInMicroseconds = 200000)
     {
-        return $this->toCollection($this->api->getAllPages());
+        return $this->toCollection($this->api->getAllPages($delayBetweenRequestsInMicroseconds));
     }
 
     public function table($table)

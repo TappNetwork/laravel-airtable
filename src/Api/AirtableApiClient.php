@@ -68,20 +68,39 @@ class AirtableApiClient implements ApiClient
         return $this->decodeResponse($this->client->get($url));
     }
 
-    public function getAllPages()
+    public function getAllPages($delayBetweenRequestsInMicroseconds)
     {
         $url = $this->getEndpointUrl();
 
-        $response = $this->client->get($url, [
-            'query' => [
-                'pageSize' => $this->pageSize,
-                'maxRecords' => $this->maxRecords,
-            ],
-        ]);
+        $records = [];
+        $offset = false;
 
-        //TODO: loop through offset to get more than one page when more than 100 records exist
+        do {
+            $query = []; // page sizes defaults to 100
 
-        return $this->decodeResponse($response);
+            if ($offset) {
+                $query['offset'] = $offset;
+            }
+
+            $response = $this->client->get($url, [
+                'query' => $query,
+            ]);
+
+            $response = $this->decodeResponse($response);
+
+            if (isset($response['records'])) {
+                $records = array_merge($response['records'], $records);
+            }
+
+            if (isset($response['offset'])) {
+                $offset = $response['offset'];
+                usleep($delayBetweenRequestsInMicroseconds);
+            } else {
+                $offset = false;
+            }
+        } while ($offset);
+
+        return collect($records);
     }
 
     public function post($contents = null)

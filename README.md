@@ -60,9 +60,19 @@ If you need to support multiple tables, add them to the tables config in the con
 use Airtable;
 ```
 
-#### Get all records from that table.
+#### Get records from that table
+- This will only return the first 100 records due to Airtable page size limiation
+
 ``` php
 Airtable::table('tasks')->get();
+```
+
+#### Get all records from that table.
+- This will get all records by sending multiple requests until all record are fetched.
+- Optional Parameter which is the delay between requests in microseconds as API is limited to 5 requests per second per base, defaults to 0.2 second.
+``` php
+Airtable::table('tasks')->all();
+Airtable::table('tasks')->all(500000); // 0.5 seconds
 ```
 
 #### Get one record from the default table.
