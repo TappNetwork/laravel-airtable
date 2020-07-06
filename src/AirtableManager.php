@@ -119,11 +119,7 @@ class AirtableManager
             $httpLogFormat = null;
         }
 
-        if ($this->app['config']['airtable.typecast']) {
-            $airtableTypeCast = $this->app['config']['airtable.typecast'];
-        } else {
-            $airtableTypeCast = false;
-        }
+        $airtableTypeCast = $this->app['config']['airtable.typecast'];
 
         $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast);
 
