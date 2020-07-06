@@ -190,7 +190,7 @@ class AirtableApiClient implements ApiClient
         ], $url);
 
         if ($this->filters) {
-            $url .= '?' . http_build_query([
+            $url .= '?'.http_build_query([
                 'filterByFormula' => implode('&', $this->filters),
             ]);
         }
