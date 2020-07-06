@@ -125,7 +125,7 @@ class AirtableManager
             $airtableTypeCast = false;
         }
 
-        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, $airtableTypeCast);
+        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast);
 
         return new Airtable($client, $table);
     }
