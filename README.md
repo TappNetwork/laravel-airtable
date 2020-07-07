@@ -27,11 +27,13 @@ Define airtables account information in .env:
 AIRTABLE_KEY=
 AIRTABLE_BASE=
 AIRTABLE_TABLE=
+AIRTABLE_TYPECAST=false 
 ```
 
 * `AIRTABLE_KEY` can be retrieved here: https://airtable.com/account
 * `AIRTABLE_BASE` can be found here: https://airtable.com/api, select base then copy from URL: `https://airtable.com/[Base Is Here]/api/docs#curl/introduction`
 * `AIRTABLE_TABLE` can be found in the docs for the appropriate base, this is not case senstive. IE: `tasks`
+* `AIRTABLE_TYPECAST` set this to true to allow automatic casting.
 
 ## Example Config
 
