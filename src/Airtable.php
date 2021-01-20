@@ -64,7 +64,7 @@ class Airtable
         } else {
             $this->api->addFilter($column, $operator, $value);
         }
-        
+
         return $this;
     }
 
