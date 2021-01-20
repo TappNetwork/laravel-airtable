@@ -191,7 +191,7 @@ class AirtableApiClient implements ApiClient
 
         if ($this->filters) {
             $url .= '?'.http_build_query([
-                'filterByFormula' => implode('&', $this->filters),
+                'filterByFormula' => 'AND('.implode(',', $this->filters).')',
             ]);
         }
 

@@ -60,10 +60,12 @@ class Airtable
     public function where($column, $operator, $value = null)
     {
         if (is_null($value)) {
-            return $this->api->addFilter($column, '=', $operator);
+            $this->api->addFilter($column, '=', $operator);
         } else {
-            return $this->api->addFilter($column, $operator, $value);
+            $this->api->addFilter($column, $operator, $value);
         }
+
+        return $this;
     }
 
     public function firstOrCreate(array $idData, array $createData = [])
