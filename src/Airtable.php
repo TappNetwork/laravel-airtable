@@ -41,7 +41,7 @@ class Airtable
         if($fields) {
             $this->select($fields);
         }
-        
+
         return $this->toCollection($this->api->get());
     }
 
