@@ -36,8 +36,12 @@ class Airtable
         return $this->api->delete($id);
     }
 
-    public function get()
+    public function get(array $fields = [])
     {
+        if ($fields) {
+            $this->select($fields);
+        }
+
         return $this->toCollection($this->api->get());
     }
 
@@ -107,6 +111,13 @@ class Airtable
         $data = array_merge($idData, $updateData);
 
         return $this->create($data);
+    }
+
+    public function select(array $fields = [])
+    {
+        $this->api->setFields($fields);
+
+        return $this;
     }
 
     private function toCollection($object)
