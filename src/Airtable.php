@@ -109,6 +109,13 @@ class Airtable
         return $this->create($data);
     }
 
+    public function select(array $fields = [])
+    {
+        $this->api->setFields($fields);
+
+        return $this;
+    }
+
     private function toCollection($object)
     {
         return isset($object['records']) ? collect($object['records']) : $object;
