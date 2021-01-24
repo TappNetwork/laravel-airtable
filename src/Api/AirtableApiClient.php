@@ -197,7 +197,7 @@ class AirtableApiClient implements ApiClient
             $this->table,
         ], $url);
 
-        if($query_params = $this->getQueryParams()) {
+        if ($query_params = $this->getQueryParams()) {
             $url .= '?' . http_build_query($query_params);
         }
 

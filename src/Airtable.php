@@ -38,7 +38,7 @@ class Airtable
 
     public function get(array $fields = [])
     {
-        if($fields) {
+        if ($fields) {
             $this->select($fields);
         }
 
