@@ -14,6 +14,7 @@ class AirtableApiClient implements ApiClient
     private $table;
 
     private $filters = [];
+    private $fields = [];
     private $pageSize = 100;
     private $maxRecords = 100;
 
@@ -168,6 +169,13 @@ class AirtableApiClient implements ApiClient
         }
 
         return json_decode($body, true);
+    }
+
+    public function setFields(?array $fields)
+    {
+        $this->fields = $fields;
+
+        return $this;
     }
 
     protected function getEndpointUrl(?string $id = null): string
