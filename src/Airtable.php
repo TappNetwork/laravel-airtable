@@ -36,8 +36,12 @@ class Airtable
         return $this->api->delete($id);
     }
 
-    public function get()
+    public function get(array $fields = [])
     {
+        if($fields) {
+            $this->select($fields);
+        }
+        
         return $this->toCollection($this->api->get());
     }
 
