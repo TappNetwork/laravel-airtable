@@ -197,12 +197,25 @@ class AirtableApiClient implements ApiClient
             $this->table,
         ], $url);
 
-        if ($this->filters) {
-            $url .= '?'.http_build_query([
-                'filterByFormula' => 'AND('.implode(',', $this->filters).')',
-            ]);
+        if($query_params = $this->getQueryParams()) {
+            $url .= '?' . http_build_query($query_params);
         }
 
         return $url;
+    }
+
+    protected function getQueryParams(): array
+    {
+        $query_params = [];
+
+        if ($this->filters) {
+            $query_params['filterByFormula'] = 'AND('.implode(',', $this->filters).')';
+        }
+
+        if ($this->fields) {
+            $query_params['fields'] = $this->fields;
+        }
+
+        return $query_params;
     }
 }
