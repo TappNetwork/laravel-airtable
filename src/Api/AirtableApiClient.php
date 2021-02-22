@@ -15,6 +15,7 @@ class AirtableApiClient implements ApiClient
 
     private $filters = [];
     private $fields = [];
+    private $offset = false;
     private $pageSize = 100;
     private $maxRecords = 100;
 
@@ -214,6 +215,10 @@ class AirtableApiClient implements ApiClient
 
         if ($this->fields) {
             $query_params['fields'] = $this->fields;
+        }
+
+        if ($this->offset) {
+            $query_params['offset'] = $this->offset;
         }
 
         return $query_params;
