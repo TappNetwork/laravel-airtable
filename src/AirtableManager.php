@@ -120,8 +120,9 @@ class AirtableManager
         }
 
         $airtableTypeCast = $this->app['config']['airtable.typecast'];
+        $delay = $this->app['config']['airtable.delay_between_requests'];
 
-        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast);
+        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast, $delay);
 
         return new Airtable($client, $table);
     }
