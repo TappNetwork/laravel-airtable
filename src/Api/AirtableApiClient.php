@@ -133,6 +133,21 @@ class AirtableApiClient implements ApiClient
         return $this->decodeResponse($this->client->patch($url, $params));
     }
 
+    public function massUpdate(string $method, array $data)
+    {
+        $url = $this->getEndpointUrl();
+        $records = [];
+
+        foreach (array_chunk($data, 10) as $data_chunk) {
+            $params = ['json' => ['records' => $data, 'typecast' => $this->typecast]];
+
+            $response = $this->decodeResponse($this->client->$method($url, $params));
+            $records += $response['records'];
+        }
+
+        return ['records' => $records];
+    }
+
     public function delete(string $id)
     {
         $url = $this->getEndpointUrl($id);
