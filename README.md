@@ -124,6 +124,23 @@ Airtable::table('companies')->update('rec5N7fr8GhDtdNxx', [ 'name' => 'Google', 
 Airtable::table('companies')->patch('rec5N7fr8GhDtdNxx', ['country' => 'US']);
 ```
 
+#### Mass Update or Patch
+- Array of data to be updated or patched
+
+``` php
+Airtable::table('companies')->patch([
+    [
+        'id' => 'rec5N7fr8GhDtdNxx',
+        'fields' => ['country' => 'US']
+    ],
+    [
+        'id' => 'rec8BhDt4fs2',
+        'fields' => ['country' => 'UK']
+    ],
+    ...
+]);
+```
+
 ### Testing
 
 ``` bash
