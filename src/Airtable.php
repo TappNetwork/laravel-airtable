@@ -2,6 +2,8 @@
 
 namespace Tapp\Airtable;
 
+use InvalidArgumentException;
+
 class Airtable
 {
     private $api;
@@ -21,14 +23,50 @@ class Airtable
         return $this->api->post($data);
     }
 
-    public function update(string $id, $data)
+    /**
+     * @param  dynamic $args (string) $id, $data | (array) $data
+     * @return mixed
+     * 
+     * @throws \InvalidArgumentException
+     */
+    public function update(...$args)
     {
-        return $this->api->put($id, $data);
+        if (is_string($args[0])) {
+            if (! isset($args[1])) {
+                throw new InvalidArgumentException("\$data argument is required.");
+            }
+
+            return $this->api->put($args[0], $args[1]);
+        }
+
+        elseif (is_array($args[0])) {
+            return $this->api->massUpdate('put', $args[0]);
+        }
+
+        throw new InvalidArgumentException('Update accepts either an array or an id and array of data.');
     }
 
-    public function patch(string $id, $data)
+    /**
+     * @param  dynamic $args (string) $id, $data | (array) $data
+     * @return mixed
+     * 
+     * @throws \InvalidArgumentException
+     */
+    public function patch(...$args)
     {
-        return $this->api->patch($id, $data);
+        if (is_string($args[0])) {
+            if (! isset($args[1])) {
+                throw new InvalidArgumentException("\$data argument is required.");
+            }
+
+            return $this->api->patch($args[0], $args[1]);
+        }
+
+        elseif (is_array($args[0])) {
+            return $this->api->massUpdate('patch', $args[0]);
+        }
+
+        throw new InvalidArgumentException('Patch accepts either an array or an id and array of data.');
     }
 
     public function destroy(string $id)
