@@ -26,20 +26,18 @@ class Airtable
     /**
      * @param  dynamic $args (string) $id, $data | (array) $data
      * @return mixed
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function update(...$args)
     {
         if (is_string($args[0])) {
             if (! isset($args[1])) {
-                throw new InvalidArgumentException("\$data argument is required.");
+                throw new InvalidArgumentException('$data argument is required.');
             }
 
             return $this->api->put($args[0], $args[1]);
-        }
-
-        elseif (is_array($args[0])) {
+        } elseif (is_array($args[0])) {
             return $this->api->massUpdate('put', $args[0]);
         }
 
@@ -49,20 +47,18 @@ class Airtable
     /**
      * @param  dynamic $args (string) $id, $data | (array) $data
      * @return mixed
-     * 
+     *
      * @throws \InvalidArgumentException
      */
     public function patch(...$args)
     {
         if (is_string($args[0])) {
             if (! isset($args[1])) {
-                throw new InvalidArgumentException("\$data argument is required.");
+                throw new InvalidArgumentException('$data argument is required.');
             }
 
             return $this->api->patch($args[0], $args[1]);
-        }
-
-        elseif (is_array($args[0])) {
+        } elseif (is_array($args[0])) {
             return $this->api->massUpdate('patch', $args[0]);
         }
 

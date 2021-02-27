@@ -136,7 +136,7 @@ class AirtableApiClient implements ApiClient
             $response = $this->decodeResponse($this->client->$method($url, $params));
             $records += $response['records'];
 
-            if (isset($chunks[$key+1])) {
+            if (isset($chunks[$key + 1])) {
                 usleep($this->delay);
             }
         }
