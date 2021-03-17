@@ -15,6 +15,7 @@ class AirtableApiClient implements ApiClient
 
     private $filters = [];
     private $fields = [];
+    private $offset = false;
     private $pageSize = 100;
     private $maxRecords = 100;
 
@@ -73,35 +74,22 @@ class AirtableApiClient implements ApiClient
 
     public function getAllPages($delayBetweenRequestsInMicroseconds)
     {
-        $url = $this->getEndpointUrl();
-
         $records = [];
-        $offset = false;
 
         do {
-            $query = []; // page sizes defaults to 100
-
-            if ($offset) {
-                $query['offset'] = $offset;
-            }
-
-            $response = $this->client->get($url, [
-                'query' => $query,
-            ]);
-
-            $response = $this->decodeResponse($response);
+            $response = $this->get();
 
             if (isset($response['records'])) {
                 $records = array_merge($response['records'], $records);
             }
 
             if (isset($response['offset'])) {
-                $offset = $response['offset'];
+                $this->offset = $response['offset'];
                 usleep($delayBetweenRequestsInMicroseconds);
             } else {
-                $offset = false;
+                $this->offset = false;
             }
-        } while ($offset);
+        } while ($this->offset);
 
         return collect($records);
     }
@@ -214,6 +202,10 @@ class AirtableApiClient implements ApiClient
 
         if ($this->fields) {
             $query_params['fields'] = $this->fields;
+        }
+
+        if ($this->offset) {
+            $query_params['offset'] = $this->offset;
         }
 
         return $query_params;
