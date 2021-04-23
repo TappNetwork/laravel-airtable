@@ -12,6 +12,7 @@ class AirtableApiClient implements ApiClient
     private $typecast;
     private $base;
     private $table;
+    private $delay;
 
     private $filters = [];
     private $fields = [];
@@ -19,11 +20,12 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token, $httpLogFormat = null, Client $client = null, $typecast = false)
+    public function __construct($base, $table, $access_token, $httpLogFormat = null, Client $client = null, $typecast = false, $delayBetweenRequests = 200000)
     {
         $this->base = $base;
         $this->table = $table;
         $this->typecast = $typecast;
+        $this->delay = $delayBetweenRequests;
 
         $stack = \GuzzleHttp\HandlerStack::create();
 
@@ -119,6 +121,27 @@ class AirtableApiClient implements ApiClient
         $params = ['json' => ['fields' => (object) $contents, 'typecast' => $this->typecast]];
 
         return $this->decodeResponse($this->client->patch($url, $params));
+    }
+
+    public function massUpdate(string $method, array $data)
+    {
+        $url = $this->getEndpointUrl();
+        $records = [];
+
+        // Update & Patch request body can include an array of up to 10 record objects
+        $chunks = array_chunk($data, 10);
+        foreach ($chunks as $key => $data_chunk) {
+            $params = ['json' => ['records' => $data_chunk, 'typecast' => $this->typecast]];
+
+            $response = $this->decodeResponse($this->client->$method($url, $params));
+            $records += $response['records'];
+
+            if (isset($chunks[$key + 1])) {
+                usleep($this->delay);
+            }
+        }
+
+        return ['records' => $records];
     }
 
     public function delete(string $id)
