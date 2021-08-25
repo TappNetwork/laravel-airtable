@@ -20,8 +20,8 @@ class ClientTest extends TestCase
     public function it_can_post()
     {
         $expectedResponse = [
-            'id' => 'randomlygenerated',
-            'fields' => ['Company Name' => 'Tapp Network'],
+            'id'          => 'randomlygenerated',
+            'fields'      => ['Company Name' => 'Tapp Network'],
             'createdTime' => 'timestamp',
         ];
 
@@ -32,7 +32,7 @@ class ClientTest extends TestCase
             '/v0/test_base/companies',
             [
                 'json' => [
-                    'fields' => (object) $postData,
+                    'fields' => (object)$postData,
                 ],
             ]
         );
@@ -73,6 +73,78 @@ class ClientTest extends TestCase
         $first = $actualResponse['records'][0];
 
         $this->assertEquals($expectedResponse['fields'], $first['fields']);
+    }
+
+    /** @test */
+    public function it_can_sort()
+    {
+        //Ascending sort
+        $expectedResponseAsc = [
+            [
+                'id'          => 0,
+                'fields'      => ['Company Name' => 'A Network'],
+                'createdTime' => 'timestamp',
+            ],
+            [
+                'id'          => 1,
+                'fields'      => ['Company Name' => 'B Network'],
+                'createdTime' => 'timestamp',
+            ],
+        ];
+
+        $mockGuzzle = $this->mock_guzzle_request(
+            json_encode($expectedResponseAsc),
+            '/v0/test_base/companies',
+            [
+                'json' => [
+                    'sort' => '[{field:"Company Name",direction:"asc"}]',
+                ],
+            ]
+        );
+
+        $client = $this->build_client($mockGuzzle);
+
+        $actualResponse = $client->setTable('companies')
+            ->addSort('Company Name', 'asc')
+            ->get();
+
+        $first = $actualResponse['records'][0];
+
+        $this->assertEquals($expectedResponseAsc['fields'], $first['fields']);
+
+        //Descending sort
+        $expectedResponseDesc = [
+            [
+                'id'          => 1,
+                'fields'      => ['Company Name' => 'B Network'],
+                'createdTime' => 'timestamp',
+            ],
+            [
+                'id'          => 0,
+                'fields'      => ['Company Name' => 'A Network'],
+                'createdTime' => 'timestamp',
+            ],
+        ];
+
+        $mockGuzzle = $this->mock_guzzle_request(
+            json_encode($expectedResponseDesc),
+            '/v0/test_base/companies',
+            [
+                'json' => [
+                    'sort' => '[{field:"Company Name",direction:"desc"}]',
+                ],
+            ]
+        );
+
+        $client = $this->build_client($mockGuzzle);
+
+        $actualResponse = $client->setTable('companies')
+            ->addSort('Company Name', 'desc')
+            ->get();
+
+        $first = $actualResponse['records'][0];
+
+        $this->assertEquals($expectedResponseDesc['fields'], $first['fields']);
     }
 
     private function build_client($mockGuzzle = null)
