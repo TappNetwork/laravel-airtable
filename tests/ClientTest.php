@@ -32,7 +32,7 @@ class ClientTest extends TestCase
             '/v0/test_base/companies',
             [
                 'json' => [
-                    'fields' => (object)$postData,
+                    'fields' => (object) $postData,
                 ],
             ]
         );
