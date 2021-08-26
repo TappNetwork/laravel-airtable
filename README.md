@@ -91,6 +91,20 @@ Airtable::where('id', '5')->get();
 Airtable::where('id', '>', '5')->get();
 ```
 
+#### Sorting records
+
+- First argument is the column name
+- Second argument is the sort direction: `asc` (default) or `desc`
+
+``` php
+Airtable::orderBy('id')->get();
+Airtable::orderBy('created_at', 'desc')->get();
+```
+You can sort by multiple fields by calling `orderBy` more than once (a single call with array syntax is not supported):
+```php
+Airtable::orderBy('id')->orderBy('created_at', 'desc')->get();
+```
+
 #### First or Create
 - First argument will be used for finding existing
 - Second argument is additional data to save if no results are found and we are creating (will not be saved used if item already exists)

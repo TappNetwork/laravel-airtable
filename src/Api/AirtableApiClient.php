@@ -16,6 +16,7 @@ class AirtableApiClient implements ApiClient
 
     private $filters = [];
     private $fields = [];
+    private $sorts = [];
     private $offset = false;
     private $pageSize = 100;
     private $maxRecords = 100;
@@ -56,6 +57,17 @@ class AirtableApiClient implements ApiClient
     public function addFilter($column, $operation, $value)
     {
         $this->filters[] = "{{$column}}{$operation}\"{$value}\"";
+
+        return $this;
+    }
+
+    public function addSort(string $column, string $direction = 'asc')
+    {
+        if ($direction === 'desc') {
+            $this->sorts[] = ['field' => $column, 'direction' => $direction];
+        } else {
+            $this->sorts[] = ['field' => $column];
+        }
 
         return $this;
     }
@@ -229,6 +241,10 @@ class AirtableApiClient implements ApiClient
 
         if ($this->offset) {
             $query_params['offset'] = $this->offset;
+        }
+
+        if ($this->sorts) {
+            $query_params['sort'] = $this->sorts;
         }
 
         return $query_params;

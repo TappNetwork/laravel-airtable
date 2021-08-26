@@ -106,6 +106,13 @@ class Airtable
         return $this;
     }
 
+    public function orderBy(string $column, string $direction = 'asc')
+    {
+        $this->api->addSort($column, $direction);
+
+        return $this;
+    }
+
     public function firstOrCreate(array $idData, array $createData = [])
     {
         foreach ($idData as $key => $value) {
