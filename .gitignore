@@ -5,3 +5,4 @@ vendor
 coverage
 .env
 .ac-php-conf.json
+.phpunit.result.cache
