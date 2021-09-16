@@ -77,8 +77,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            'api.airtable.com/*' =>
-            Http::response($expectedResponseAsc, 200)
+            'api.airtable.com/*' => Http::response($expectedResponseAsc, 200),
         ]);
 
         $actualResponse = Airtable::table('companies')
@@ -108,8 +107,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            'api.airtable.com/*' =>
-            Http::response($expectedResponseDesc, 200)
+            'api.airtable.com/*' => Http::response($expectedResponseDesc, 200),
         ]);
 
         $actualResponse = Airtable::table('companies')
