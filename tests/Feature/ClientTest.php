@@ -3,9 +3,9 @@
 namespace Tapp\Airtable\Tests\Feature;
 
 use Illuminate\Support\Facades\Http;
-use Tapp\Airtable\Tests\TestCase;
-use Tapp\Airtable\Facades\AirtableFacade as Airtable;
 use Tapp\Airtable\Api\AirtableApiClient as Client;
+use Tapp\Airtable\Facades\AirtableFacade as Airtable;
+use Tapp\Airtable\Tests\TestCase;
 
 class ClientTest extends TestCase
 {
@@ -28,8 +28,7 @@ class ClientTest extends TestCase
         $postData = ['Company Name' => 'Tapp Network'];
 
         Http::fake([
-            '/v0/test_base/companies' =>
-            Http::response($expectedResponse, 200)
+            '/v0/test_base/companies' => Http::response($expectedResponse, 200),
         ]);
 
         $actualResponse = Airtable::table('companies')
@@ -48,8 +47,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            '/v0/test_base/companies' =>
-            Http::response($expectedResponse, 200)
+            '/v0/test_base/companies' => Http::response($expectedResponse, 200),
         ]);
 
         $actualResponse = Airtable::table('companies')
