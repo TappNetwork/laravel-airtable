@@ -62,10 +62,8 @@ class ClientTest extends TestCase
     }
 
     /** @test */
-    public function it_can_sort()
+    public function it_can_sort_asc()
     {
-        return $this->markTestIncomplete('This test needs to be updated to use Http facade fake');
-
         //Ascending sort
         $expectedResponseAsc = [
             [
@@ -81,7 +79,7 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            '/v0/test_base/companies' =>
+            'api.airtable.com/*' =>
             Http::response($expectedResponseAsc, 200)
         ]);
 
@@ -89,13 +87,14 @@ class ClientTest extends TestCase
             ->orderBy('Company Name', 'asc')
             ->get();
 
-        // TODO: fix this test
-        dd($actualResponse);
-
         $first = $actualResponse[0];
 
-        $this->assertEquals($expectedResponseAsc['fields'], $first['fields']);
+        $this->assertEquals($expectedResponseAsc[0]['fields'], $first['fields']);
+    }
 
+    /** @test */
+    public function it_can_sort_desc()
+    {
         //Descending sort
         $expectedResponseDesc = [
             [
@@ -111,18 +110,16 @@ class ClientTest extends TestCase
         ];
 
         Http::fake([
-            '/v0/test_base/companies' =>
-            Http::response($expectedResponseAsc, 200)
+            'api.airtable.com/*' =>
+            Http::response($expectedResponseDesc, 200)
         ]);
 
         $actualResponse = Airtable::table('companies')
             ->orderBy('Company Name', 'desc')
             ->get();
 
-        // TODO: fix this test
-        dd($actualResponse);
-        $first = $actualResponse['records'][0];
+        $first = $actualResponse[0];
 
-        $this->assertEquals($expectedResponseDesc['fields'], $first['fields']);
+        $this->assertEquals($expectedResponseDesc[0]['fields'], $first['fields']);
     }
 }

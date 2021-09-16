@@ -2,7 +2,7 @@
 
 namespace Tapp\Airtable\Api;
 
-use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class AirtableApiClient implements ApiClient
@@ -21,36 +21,24 @@ class AirtableApiClient implements ApiClient
     private $pageSize = 100;
     private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token, $httpLogFormat = null, Client $client = null, $typecast = false, $delayBetweenRequests = 200000)
+    public function __construct($base, $table, $access_token, $httpLogFormat = null, Http $client = null, $typecast = false, $delayBetweenRequests = 200000)
     {
         $this->base = $base;
         $this->table = $table;
         $this->typecast = $typecast;
         $this->delay = $delayBetweenRequests;
 
-        $stack = \GuzzleHttp\HandlerStack::create();
-
-        if ($httpLogFormat) {
-            $stack->push(
-                \GuzzleHttp\Middleware::log(
-                    new \Monolog\Logger('Logger'),
-                    new \GuzzleHttp\MessageFormatter($httpLogFormat)
-                )
-            );
-        }
-
-        $this->client = $client ?? $this->buildClient($access_token, $stack);
+        $this->client = $client ?? $this->buildClient($access_token);
     }
 
-    private function buildClient($access_token, $stack)
+    private function buildClient($access_token)
     {
-        return new Client([
+        return Http::withOptions([
             'base_uri' => 'https://api.airtable.com',
             'headers' => [
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
-            'handler' => $stack,
         ]);
     }
 
