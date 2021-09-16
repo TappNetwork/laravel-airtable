@@ -34,8 +34,6 @@ class ClientTest extends TestCase
         $actualResponse = Airtable::table('companies')
             ->firstOrCreate($postData);
 
-        dd($actualResponse, $expectedResponse);
-
         $this->assertEquals($expectedResponse['fields'], $actualResponse['fields']);
     }
 
@@ -56,9 +54,7 @@ class ClientTest extends TestCase
             ->where('Company Name', '=', 'Tapp Network')
             ->get();
 
-        $first = $actualResponse[0];
-
-        $this->assertEquals($expectedResponse['fields'], $first['fields']);
+        $this->assertEquals($expectedResponse['fields'], $actualResponse['fields']);
     }
 
     /** @test */

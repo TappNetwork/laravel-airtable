@@ -123,7 +123,7 @@ class Airtable
 
         // first
         if ($results->isNotEmpty()) {
-            return $results->first();
+            return $results;
         }
 
         // create

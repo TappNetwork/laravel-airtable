@@ -179,7 +179,7 @@ class AirtableApiClient implements ApiClient
             return [];
         }
 
-        return json_decode($body, true);
+        return collect(json_decode($body, true));
     }
 
     public function setFields(?array $fields)
