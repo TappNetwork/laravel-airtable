@@ -24,7 +24,7 @@ class Airtable
     }
 
     /**
-     * @param  dynamic $args (string) $id, $data | (array) $data
+     * @param  dynamic  $args  (string) $id, $data | (array) $data
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -45,7 +45,7 @@ class Airtable
     }
 
     /**
-     * @param  dynamic $args (string) $id, $data | (array) $data
+     * @param  dynamic  $args  (string) $id, $data | (array) $data
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -123,7 +123,7 @@ class Airtable
 
         // first
         if ($results->isNotEmpty()) {
-            return $results->first();
+            return $results;
         }
 
         // create
