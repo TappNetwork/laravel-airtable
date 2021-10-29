@@ -105,6 +105,13 @@ class Airtable
 
         return $this;
     }
+    
+    public function whereRaw($query)
+    {
+            $this->api->addRaw($query);
+
+        return $this;
+    }
 
     public function orderBy(string $column, string $direction = 'asc')
     {
