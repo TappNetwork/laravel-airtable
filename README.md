@@ -91,6 +91,13 @@ Airtable::where('id', '5')->get();
 Airtable::where('id', '>', '5')->get();
 ```
 
+#### Raw Queries Using filterByFormula
+- Based on the Airtable Formula Field Reference https://support.airtable.com/hc/en-us/articles/203255215-Formula-Field-Reference
+- whereRaw allows you to pass raw formulas through the API using the filterByFormula method 
+``` php
+Airtable::whereRaw('SEARCH("search term", column)')->get();
+```
+
 #### Sorting records
 
 - First argument is the column name
