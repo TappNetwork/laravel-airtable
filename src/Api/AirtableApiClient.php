@@ -15,6 +15,7 @@ class AirtableApiClient implements ApiClient
     private $delay;
 
     private $filters = [];
+    private $raw = [];
     private $fields = [];
     private $sorts = [];
     private $offset = false;
@@ -45,6 +46,13 @@ class AirtableApiClient implements ApiClient
     public function addFilter($column, $operation, $value)
     {
         $this->filters[] = "{{$column}}{$operation}\"{$value}\"";
+
+        return $this;
+    }
+    
+    public function addRaw($query)
+    {
+        $this->raw[] = $query;
 
         return $this;
     }
@@ -223,6 +231,10 @@ class AirtableApiClient implements ApiClient
             $query_params['filterByFormula'] = 'AND('.implode(',', $this->filters).')';
         }
 
+        if ($this->raw) {
+            $query_params['filterByFormula'] = $this->raw[0];
+        }
+        
         if ($this->fields) {
             $query_params['fields'] = $this->fields;
         }
