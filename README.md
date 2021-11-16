@@ -38,6 +38,7 @@ AIRTABLE_TYPECAST=false
 ## Example Config
 
 If you need to support multiple tables, add them to the tables config in the config/airtable.php
+If your table is on a different base than the one set in the env, add that as well.
 
 ```
 ...
@@ -45,10 +46,12 @@ If you need to support multiple tables, add them to the tables config in the con
 
         'default' => [
             'name' => env('AIRTABLE_TABLE', 'Main'),
+            'base' => 'base_id',
         ],
 
         'companies' => [
             'name' => env('AIRTABLE_COMPANY_TABLE', 'Companies'),
+            'base' => 'base_id',
         ],
         ...
     ],
