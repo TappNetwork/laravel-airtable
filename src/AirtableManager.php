@@ -101,13 +101,13 @@ class AirtableManager
     {
         $config = $this->getConfig($name);
         if ($config) {
-            return $this->createAirtable($config['name'],array_key_exists('base',$config) ? $config['base'] : false);
+            return $this->createAirtable($config['name'], array_key_exists('base', $config) ? $config['base'] : false);
         } else {
             throw new InvalidArgumentException("Table [{$name}] is not configured.");
         }
     }
 
-    protected function createAirtable($table,$table_base=false)
+    protected function createAirtable($table, $table_base = false)
     {
         $base = $table_base ?: $this->app['config']['airtable.base'];
         $access_token = $this->app['config']['airtable.key'];
