@@ -108,6 +108,13 @@ You can sort by multiple fields by calling `orderBy` more than once (a single ca
 Airtable::orderBy('id')->orderBy('created_at', 'desc')->get();
 ```
 
+#### Create
+- Insert a record
+
+``` php
+Airtable::create(['name' => 'myName']);
+```
+
 #### First or Create
 - First argument will be used for finding existing
 - Second argument is additional data to save if no results are found and we are creating (will not be saved used if item already exists)
