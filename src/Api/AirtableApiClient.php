@@ -99,7 +99,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl();
 
-        $params = ['fields' => (object)$contents, 'typecast' => $this->typecast];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->post($url, $params));
     }
@@ -108,7 +108,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = ['fields' => (object)$contents, 'typecast' => $this->typecast];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->put($url, $params));
     }
@@ -117,7 +117,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = ['fields' => (object)$contents, 'typecast' => $this->typecast];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->patch($url, $params));
     }
@@ -152,12 +152,12 @@ class AirtableApiClient implements ApiClient
 
     public function responseToJson($response): string
     {
-        return (string)$response->getBody();
+        return (string) $response->getBody();
     }
 
     public function responseToCollection($response)
     {
-        $body = (string)$response->getBody();
+        $body = (string) $response->getBody();
 
         if ($body === '') {
             return collect([]);
@@ -170,7 +170,7 @@ class AirtableApiClient implements ApiClient
 
     public function decodeResponse($response)
     {
-        $body = (string)$response->getBody();
+        $body = (string) $response->getBody();
 
         if ($body === '') {
             return [];
@@ -206,7 +206,7 @@ class AirtableApiClient implements ApiClient
         ], $url);
 
         if ($query_params = $this->getQueryParams()) {
-            $url .= '?' . http_build_query($query_params);
+            $url .= '?'.http_build_query($query_params);
         }
 
         return $url;
@@ -217,7 +217,7 @@ class AirtableApiClient implements ApiClient
         $query_params = [];
 
         if ($this->filters) {
-            $query_params['filterByFormula'] = 'AND(' . implode(',', $this->filters) . ')';
+            $query_params['filterByFormula'] = 'AND('.implode(',', $this->filters).')';
         }
 
         if ($this->fields) {
