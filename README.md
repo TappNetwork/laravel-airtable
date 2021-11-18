@@ -165,6 +165,13 @@ Airtable::table('companies')->patch([
 ]);
 ```
 
+#### Destroy
+- Destroy a record
+
+``` php
+Airtable::table('companies')->destroy('rec5N7fr8GhDtdNxx');
+```
+
 ### Testing
 
 ``` bash
