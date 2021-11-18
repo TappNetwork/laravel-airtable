@@ -7,3 +7,4 @@ coverage
 .ac-php-conf.json
 .phpunit.result.cache
 .DS_Store
+.idea

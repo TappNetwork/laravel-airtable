@@ -2,6 +2,7 @@
 
 namespace Tapp\Airtable\Api;
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -18,10 +19,8 @@ class AirtableApiClient implements ApiClient
     private $fields = [];
     private $sorts = [];
     private $offset = false;
-    private $pageSize = 100;
-    private $maxRecords = 100;
 
-    public function __construct($base, $table, $access_token, $httpLogFormat = null, Http $client = null, $typecast = false, $delayBetweenRequests = 200000)
+    public function __construct($base, $table, $access_token, Http $client = null, $typecast = false, $delayBetweenRequests = 200000)
     {
         $this->base = $base;
         $this->table = $table;
@@ -42,14 +41,14 @@ class AirtableApiClient implements ApiClient
         ]);
     }
 
-    public function addFilter($column, $operation, $value)
+    public function addFilter($column, $operation, $value): AirtableApiClient
     {
         $this->filters[] = "{{$column}}{$operation}\"{$value}\"";
 
         return $this;
     }
 
-    public function addSort(string $column, string $direction = 'asc')
+    public function addSort(string $column, string $direction = 'asc'): AirtableApiClient
     {
         if ($direction === 'desc') {
             $this->sorts[] = ['field' => $column, 'direction' => $direction];
@@ -60,7 +59,7 @@ class AirtableApiClient implements ApiClient
         return $this;
     }
 
-    public function setTable($table)
+    public function setTable($table): AirtableApiClient
     {
         $this->table = $table;
 
@@ -74,7 +73,7 @@ class AirtableApiClient implements ApiClient
         return $this->decodeResponse($this->client->get($url));
     }
 
-    public function getAllPages($delayBetweenRequestsInMicroseconds)
+    public function getAllPages($delayBetweenRequestsInMicroseconds): Collection
     {
         $records = [];
 
@@ -100,7 +99,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl();
 
-        $params = ['json' => ['fields' => (object) $contents, 'typecast' => $this->typecast]];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->post($url, $params));
     }
@@ -109,7 +108,7 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = ['json' => ['fields' => (object) $contents, 'typecast' => $this->typecast]];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->put($url, $params));
     }
@@ -118,12 +117,12 @@ class AirtableApiClient implements ApiClient
     {
         $url = $this->getEndpointUrl($id);
 
-        $params = ['json' => ['fields' => (object) $contents, 'typecast' => $this->typecast]];
+        $params = ['fields' => (object) $contents, 'typecast' => $this->typecast];
 
         return $this->decodeResponse($this->client->patch($url, $params));
     }
 
-    public function massUpdate(string $method, array $data)
+    public function massUpdate(string $method, array $data): array
     {
         $url = $this->getEndpointUrl();
         $records = [];
@@ -131,7 +130,7 @@ class AirtableApiClient implements ApiClient
         // Update & Patch request body can include an array of up to 10 record objects
         $chunks = array_chunk($data, 10);
         foreach ($chunks as $key => $data_chunk) {
-            $params = ['json' => ['records' => $data_chunk, 'typecast' => $this->typecast]];
+            $params = ['records' => $data_chunk, 'typecast' => $this->typecast];
 
             $response = $this->decodeResponse($this->client->$method($url, $params));
             $records += $response['records'];
@@ -151,11 +150,9 @@ class AirtableApiClient implements ApiClient
         return $this->decodeResponse($this->client->delete($url));
     }
 
-    public function responseToJson($response)
+    public function responseToJson($response): string
     {
-        $body = (string) $response->getBody();
-
-        return $body;
+        return (string) $response->getBody();
     }
 
     public function responseToCollection($response)
@@ -182,7 +179,7 @@ class AirtableApiClient implements ApiClient
         return collect(json_decode($body, true));
     }
 
-    public function setFields(?array $fields)
+    public function setFields(?array $fields): AirtableApiClient
     {
         $this->fields = $fields;
 
