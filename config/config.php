@@ -54,14 +54,11 @@ return [
     |
     | This value can be found on the API docs page:
     | https://airtable.com/[BASE_ID]/api/docs#curl/table:tasks
-    | The value will be hilighted at the beginning of each table section.
+    | The value will be highlighted at the beginning of each table section.
     | Example:
     | Each record in the `Tasks` contains the following fields
     |
      */
-
-    'log_http' => env('AIRTABLE_LOG_HTTP', false),
-    'log_http_format' => env('AIRTABLE_LOG_HTTP_FORMAT', '{request} >>> {res_body}'),
 
     'typecast' => env('AIRTABLE_TYPECAST', false),
 
