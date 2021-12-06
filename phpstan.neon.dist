@@ -2,9 +2,11 @@ includes:
     - phpstan-baseline.neon
 
 parameters:
-    level: 8
+    level: 2
     paths:
         - src
         - config
     tmpDir: build/phpstan
+    excludePaths:
+        - ./vendor
     checkMissingIterableValueType: true
