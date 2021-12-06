@@ -112,10 +112,16 @@ class AirtableManager
         $base = $table_base ?: $this->app['config']['airtable.base'];
         $access_token = $this->app['config']['airtable.key'];
 
+        if ($this->app['config']['airtable.log_http']) {
+            $httpLogFormat = $this->app['config']['airtable.log_http_format'];
+        } else {
+            $httpLogFormat = null;
+        }
+
         $airtableTypeCast = $this->app['config']['airtable.typecast'];
         $delay = $this->app['config']['airtable.delay_between_requests'];
 
-        $client = new AirtableApiClient($base, $table, $access_token, null, $airtableTypeCast, $delay);
+        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast, $delay);
 
         return new Airtable($client, $table);
     }
