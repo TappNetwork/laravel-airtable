@@ -140,7 +140,7 @@ class AirtableManager
     public function __call($method, $parameters)
     {
         $defaultConfig = $this->app['config']['airtable.default'];
-        $defaultTable = $this->app["config"]["airtable.tables.{$$defaultConfig}"]["name"];
+        $defaultTable = $this->app['config']["airtable.tables.{$$defaultConfig}"]['name'];
 
         return $this->table($defaultTable)->$method(...$parameters);
     }
