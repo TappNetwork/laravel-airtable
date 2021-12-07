@@ -37,7 +37,6 @@ class AirtableManager
      * Get a airtable table instance.
      *
      * @param  string  $table
-     * @return \Airtable\Table
      */
     public function table(string $table)
     {
@@ -56,7 +55,7 @@ class AirtableManager
     {
         $name = $name ?: $this->getDefaultTable();
 
-        // To get the aritable table configuration, we will just pull each of the
+        // To get the airtable table configuration, we will just pull each of the
         // connection configurations and get the configurations for the given name.
         // If the configuration doesn't exist, we'll throw an exception and bail.
         $tables = $this->app['config']['airtable.tables'];
@@ -112,18 +111,12 @@ class AirtableManager
         $base = $table_base ?: $this->app['config']['airtable.base'];
         $access_token = $this->app['config']['airtable.key'];
 
-        if ($this->app['config']['airtable.log_http']) {
-            $httpLogFormat = $this->app['config']['airtable.log_http_format'];
-        } else {
-            $httpLogFormat = null;
-        }
-
         $airtableTypeCast = $this->app['config']['airtable.typecast'];
         $delay = $this->app['config']['airtable.delay_between_requests'];
 
-        $client = new AirtableApiClient($base, $table, $access_token, $httpLogFormat, null, $airtableTypeCast, $delay);
+        $client = new AirtableApiClient($base, $table, $access_token, null, $airtableTypeCast, $delay);
 
-        return new Airtable($client, $table);
+        return new Airtable($client);
     }
 
     /**
@@ -146,6 +139,9 @@ class AirtableManager
      */
     public function __call($method, $parameters)
     {
-        return $this->table()->$method(...$parameters);
+        $defaultConfig = $this->app['config']['airtable.default'];
+        $defaultTable = $this->app['config']["airtable.tables.{$defaultConfig}"]['name'];
+
+        return $this->table($defaultTable)->$method(...$parameters);
     }
 }

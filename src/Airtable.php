@@ -24,7 +24,7 @@ class Airtable
     }
 
     /**
-     * @param  dynamic  $args  (string) $id, $data | (array) $data
+     * @param  mixed  $args  (string) $id, $data | (array) $data
      * @return mixed
      *
      * @throws \InvalidArgumentException
@@ -45,7 +45,7 @@ class Airtable
     }
 
     /**
-     * @param  dynamic  $args  (string) $id, $data | (array) $data
+     * @param  mixed  $args  (string) $id, $data | (array) $data
      * @return mixed
      *
      * @throws \InvalidArgumentException
