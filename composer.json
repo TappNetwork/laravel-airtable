@@ -18,12 +18,12 @@
     "require": {
         "php": "^7.3 || ^8.0",
         "guzzlehttp/guzzle": "~6.0 || ~7.0",
-        "illuminate/support": "5.7.* || 5.8.* ||^6.0 || ^7.0 || ^8.0 || ^9.0",
+        "illuminate/support": "5.7.* || 5.8.* ||^6.0 || ^7.0 || ^8.0 || ^9.0|^10.0",
         "symfony/dotenv": "^4.2 || ^5.1"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^5.0 || ^6.0",
+        "orchestra/testbench": "^5.0 || ^6.0|^8.0",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
@@ -43,7 +43,6 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true,
