@@ -30,7 +30,7 @@ AIRTABLE_TABLE=
 AIRTABLE_TYPECAST=false 
 ```
 
-* `AIRTABLE_KEY` can be retrieved here: https://airtable.com/account
+* `AIRTABLE_KEY` Airtable is requiring personal access tokens for Authorization starting in 2024. A token can be created here: https://airtable.com/create/tokens. If you are upgrading from an API key to access token, simply replace the value previously held in this environment variable with your new token.
 * `AIRTABLE_BASE` can be found here: https://airtable.com/api, select base then copy from URL: `https://airtable.com/[Base Is Here]/api/docs#curl/introduction`
 * `AIRTABLE_TABLE` can be found in the docs for the appropriate base, this is not case senstive. IE: `tasks`
 * `AIRTABLE_TYPECAST` set this to true to allow automatic casting.
