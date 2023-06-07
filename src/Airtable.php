@@ -161,6 +161,11 @@ class Airtable
         return $this;
     }
 
+    public function upsert(array $data, array $fieldsToMergeOn)
+    {
+        return $this->api->upsert($data, $fieldsToMergeOn);
+    }
+
     private function toCollection($object)
     {
         return isset($object['records']) ? collect($object['records']) : $object;
