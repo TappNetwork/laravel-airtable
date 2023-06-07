@@ -143,7 +143,6 @@ class AirtableApiClient implements ApiClient
         return ['records' => $records];
     }
 
-
     public function upsert($data = null, $fieldsToMergeOn = [])
     {
         $records = [];
