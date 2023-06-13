@@ -106,6 +106,13 @@ class Airtable
         return $this;
     }
 
+    public function filterByFormula($formula)
+    {
+        $this->api->addFilterByFormula($formula);
+
+        return $this;
+    }
+
     public function orderBy(string $column, string $direction = 'asc')
     {
         $this->api->addSort($column, $direction);
