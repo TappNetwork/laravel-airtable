@@ -51,7 +51,7 @@ class AirtableApiClient implements ApiClient
     public function addFilterByFormula(string $formula): AirtableApiClient
     {
         $this->filters[] = $formula;
-        
+
         return $this;
     }
 
