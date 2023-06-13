@@ -48,6 +48,13 @@ class AirtableApiClient implements ApiClient
         return $this;
     }
 
+    public function addFilterByFormula(string $formula): AirtableApiClient
+    {
+        $this->filters[] = $formula;
+
+        return $this;
+    }
+
     public function addSort(string $column, string $direction = 'asc'): AirtableApiClient
     {
         if ($direction === 'desc') {
