@@ -94,6 +94,13 @@ Airtable::where('id', '5')->get();
 Airtable::where('id', '>', '5')->get();
 ```
 
+### Filter records by formula
+- When using `where` is not enough you may need to pass in raw filter values.
+- [Airtable reference](https://support.airtable.com/docs/formula-field-reference)
+``` php
+Airtable::table('tasks')->filterByFormula('OR({id} = "abc", {id} = "def", {id} = "ghi")')->get();
+```
+
 #### Sorting records
 
 - First argument is the column name
