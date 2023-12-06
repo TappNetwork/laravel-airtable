@@ -95,6 +95,13 @@ class Airtable
         return $this;
     }
 
+    public function view(?string $view = null)
+    {
+        $this->api->setView($view);
+
+        return $this;
+    }
+
     public function where($column, $operator, $value = null)
     {
         if (is_null($value)) {

@@ -49,6 +49,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Default Airtable View
+    |--------------------------------------------------------------------------
+    |
+    | If you have a view that you want to use as the default for all queries
+    | you can set it here. If you don't set a default view, you can specify
+    | the view on each query.
+    |
+    */ 
+
+    'views' => [
+
+        'default' => [
+            'name' => env('AIRTABLE_VIEW'),
+        ],
+
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Default Airtable Client Settings
     |--------------------------------------------------------------------------
     |
