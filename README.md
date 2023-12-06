@@ -27,12 +27,14 @@ Define airtables account information in .env:
 AIRTABLE_KEY=
 AIRTABLE_BASE=
 AIRTABLE_TABLE=
+AIRTABLE_VIEW=
 AIRTABLE_TYPECAST=false 
 ```
 
 * `AIRTABLE_KEY` Airtable is requiring personal access tokens for Authorization starting in 2024. A token can be created here: https://airtable.com/create/tokens. If you are upgrading from an API key to access token, simply replace the value previously held in this environment variable with your new token.
 * `AIRTABLE_BASE` can be found here: https://airtable.com/api, select base then copy from URL: `https://airtable.com/[Base Is Here]/api/docs#curl/introduction`
 * `AIRTABLE_TABLE` can be found in the docs for the appropriate base, this is not case senstive. IE: `tasks`
+* `AIRTABLE_VIEW` set this if you have default views for your tables
 * `AIRTABLE_TYPECAST` set this to true to allow automatic casting.
 
 ## Example Config
@@ -53,6 +55,16 @@ If your table is on a different base than the one set in the env, add that as we
             'name' => env('AIRTABLE_COMPANY_TABLE', 'Companies'),
             'base' => 'base_id',
         ],
+        ...
+    ],
+
+
+    'views' => [
+
+        'default' => [
+            'name' => env('AIRTABLE_VIEW'),
+        ],
+
         ...
     ],
 ...
@@ -84,6 +96,19 @@ Airtable::table('tasks')->all(500000); // 0.5 seconds
 ``` php
 Airtable::find('id_string');
 ```
+
+#### Get all records from the default table and view.
+``` php
+Airtable::view()->all(); // default view; equivalent to `Airtable::view(config('airtable.views.default.name'))->all()`
+```
+
+#### Get all records from the default table and custom view.
+``` php
+Airtable::view('id_string')->all(); // the name or id of the view
+Airtable::view(config('airtable.views.CUSTOM_VIEW_LABEL.name'))->all(); // use stored config values
+```
+ 
+
 
 #### Filter records
 - First argument is the column name
