@@ -115,6 +115,12 @@ You can sort by multiple fields by calling `orderBy` more than once (a single ca
 Airtable::orderBy('id')->orderBy('created_at', 'desc')->get();
 ```
 
+#### Set other API Parameters
+``` php
+Airtable::addParam('returnFieldsByFieldId', true); // one param at a time
+Airtable::params(['returnFieldsByFieldId' => true, 'view' => 'My View']) // multiple params at once
+```
+
 #### Create
 - Insert a record
 

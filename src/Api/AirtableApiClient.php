@@ -19,6 +19,7 @@ class AirtableApiClient implements ApiClient
     private $fields = [];
     private $sorts = [];
     private $offset = false;
+    private $params = [];
 
     public function __construct($base, $table, $access_token, Http $client = null, $typecast = false, $delayBetweenRequests = 200000)
     {
@@ -69,6 +70,20 @@ class AirtableApiClient implements ApiClient
     public function setTable($table): AirtableApiClient
     {
         $this->table = $table;
+
+        return $this;
+    }
+
+    public function addParam(string $key, $value): AirtableApiClient
+    {
+        $this->params[$key] = $value;
+
+        return $this;
+    }
+
+    public function setParams(array $params): AirtableApiClient
+    {
+        $this->params = $params;
 
         return $this;
     }
@@ -237,6 +252,10 @@ class AirtableApiClient implements ApiClient
 
         if ($this->sorts) {
             $query_params['sort'] = $this->sorts;
+        }
+
+        if (count($this->params)) {
+            $query_params = array_merge($query_params, $this->params);
         }
 
         return $query_params;

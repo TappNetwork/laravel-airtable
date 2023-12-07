@@ -95,6 +95,20 @@ class Airtable
         return $this;
     }
 
+    public function addParam($key, $value)
+    {
+        $this->api->addParam($key, $value);
+
+        return $this;
+    }
+
+    public function params(array $params)
+    {
+        $this->api->setParams($params);
+
+        return $this;
+    }
+
     public function where($column, $operator, $value = null)
     {
         if (is_null($value)) {
