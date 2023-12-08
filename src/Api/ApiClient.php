@@ -4,7 +4,7 @@ namespace Tapp\Airtable\Api;
 
 interface ApiClient
 {
-    public function get(string $id = null);
+    public function get(?string $id = null);
 
     public function post($contents = null);
 
