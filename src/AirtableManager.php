@@ -35,8 +35,6 @@ class AirtableManager
 
     /**
      * Get a airtable table instance.
-     *
-     * @param  string  $table
      */
     public function table(string $table)
     {
