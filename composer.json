@@ -16,7 +16,7 @@
         }
     ],
     "require": {
-        "php": "^7.3 || ^8.0",
+        "php": "^7.4 || ^8.0 || ^8.1 || ^8.2 || ^8.3",
         "guzzlehttp/guzzle": "~6.0 || ~7.0",
         "illuminate/support": "5.7.* || 5.8.* ||^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
         "symfony/dotenv": "^4.2 || ^5.1"
@@ -27,7 +27,7 @@
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
-        "phpunit/phpunit": "^8.4 || ^9.3.3"
+        "phpunit/phpunit": "^8.4 || ^9.3.3 || ^10.0"
     },
     "autoload": {
         "psr-4": {
@@ -43,12 +43,12 @@
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/phpunit",
         "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
-
     },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
-            "phpstan/extension-installer": true
+            "phpstan/extension-installer": true,
+            "pestphp/pest-plugin": false
         }
     },
     "extra": {

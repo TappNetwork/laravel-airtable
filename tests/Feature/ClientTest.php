@@ -20,8 +20,8 @@ class ClientTest extends TestCase
     public function it_can_post()
     {
         $expectedResponse = [
-            'id'          => 'randomlygenerated',
-            'fields'      => ['Company Name' => 'Tapp Network'],
+            'id' => 'randomlygenerated',
+            'fields' => ['Company Name' => 'Tapp Network'],
             'createdTime' => 'timestamp',
         ];
 
@@ -63,13 +63,13 @@ class ClientTest extends TestCase
         //Ascending sort
         $expectedResponseAsc = [
             [
-                'id'          => 0,
-                'fields'      => ['Company Name' => 'A Network'],
+                'id' => 0,
+                'fields' => ['Company Name' => 'A Network'],
                 'createdTime' => 'timestamp',
             ],
             [
-                'id'          => 1,
-                'fields'      => ['Company Name' => 'B Network'],
+                'id' => 1,
+                'fields' => ['Company Name' => 'B Network'],
                 'createdTime' => 'timestamp',
             ],
         ];
@@ -93,13 +93,13 @@ class ClientTest extends TestCase
         //Descending sort
         $expectedResponseDesc = [
             [
-                'id'          => 1,
-                'fields'      => ['Company Name' => 'B Network'],
+                'id' => 1,
+                'fields' => ['Company Name' => 'B Network'],
                 'createdTime' => 'timestamp',
             ],
             [
-                'id'          => 0,
-                'fields'      => ['Company Name' => 'A Network'],
+                'id' => 0,
+                'fields' => ['Company Name' => 'A Network'],
                 'createdTime' => 'timestamp',
             ],
         ];
