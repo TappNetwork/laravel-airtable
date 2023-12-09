@@ -172,6 +172,51 @@ class AirtableApiClient implements ApiClient
         return ['records' => $records];
     }
 
+    public function upsert($data = null, $fieldsToMergeOn = [])
+    {
+        $records = [];
+        $updatedRecords = [];
+        $createdRecords = [];
+
+        $chunks = array_chunk($data, 10);
+        foreach ($chunks as $key => $dataChunk) {
+            $contents = [];
+            foreach ($dataChunk as $dataRow) {
+                $contents[] = (object) [
+                    'fields' => (object) $dataRow,
+                ];
+            }
+
+            $params = ['performUpsert' => (object) ['fieldsToMergeOn' => $fieldsToMergeOn], 'records' => $contents];
+
+            $responseData = $this->decodeResponse(
+                $this->client->patch($this->getEndpointUrl(), $params)
+            );
+
+            if ($responseData->has('records')) {
+                $records += $responseData->get('records');
+            }
+
+            if ($responseData->has('updatedRecords')) {
+                $updatedRecords += $responseData->get('updatedRecords');
+            }
+
+            if ($responseData->has('createdRecords')) {
+                $createdRecords += $responseData->get('createdRecords');
+            }
+
+            if (isset($chunks[$key + 1])) {
+                usleep($this->delay);
+            }
+        }
+
+        return collect([
+            'records' => $records,
+            'updatedRecords' => $updatedRecords,
+            'createdRecords' => $createdRecords,
+        ]);
+    }
+
     public function delete(string $id)
     {
         $url = $this->getEndpointUrl($id);
