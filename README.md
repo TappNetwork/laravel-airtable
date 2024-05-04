@@ -1,7 +1,9 @@
 # Laravel SDK for Airtable
 
 [![Latest Stable Version](https://poser.pugx.org/tapp/laravel-airtable/v/stable)](https://packagist.org/packages/tapp/laravel-airtable)
-[![StyleCI](https://github.styleci.io/repos/172130876/shield?branch=master)](https://github.styleci.io/repos/172130876)
+![Code Style Action Status - Pint](https://github.com/TappNetwork/laravel-airtable/actions/workflows/pint.yml/badge.svg)
+![PHPStan](https://github.com/TappNetwork/laravel-airtable/actions/workflows/phpstan.yml/badge.svg)
+![Tests](https://github.com/TappNetwork/laravel-airtable/actions/workflows/run-tests.yml/badge.svg)
 [![Quality Score](https://scrutinizer-ci.com/g/TappNetwork/laravel-airtables/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/TappNetwork/laravel-airtables/?branch=master)
 [![Total Downloads](https://poser.pugx.org/tapp/laravel-airtable/downloads)](https://packagist.org/packages/tapp/laravel-airtable)
 
