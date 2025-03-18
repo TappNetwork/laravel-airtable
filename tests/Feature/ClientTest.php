@@ -60,7 +60,7 @@ class ClientTest extends TestCase
     /** @test */
     public function it_can_sort_asc()
     {
-        //Ascending sort
+        // Ascending sort
         $expectedResponseAsc = [
             [
                 'id' => 0,
@@ -90,7 +90,7 @@ class ClientTest extends TestCase
     /** @test */
     public function it_can_sort_desc()
     {
-        //Descending sort
+        // Descending sort
         $expectedResponseDesc = [
             [
                 'id' => 1,

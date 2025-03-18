@@ -165,7 +165,7 @@ class Airtable
         if ($results->isNotEmpty()) {
             $item = $results->first();
 
-            //update
+            // update
             return $this->update($item['id'], $updateData);
         }
 
