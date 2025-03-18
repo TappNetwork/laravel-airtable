@@ -66,5 +66,7 @@
                 "Airtable": "Tapp\\Airtable\\Facades\\AirtableFacade"
             }
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
