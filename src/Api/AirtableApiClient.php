@@ -46,7 +46,7 @@ class AirtableApiClient implements ApiClient
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
-        ]);
+        ])->throw();
     }
 
     public function addFilter($column, $operation, $value): AirtableApiClient
