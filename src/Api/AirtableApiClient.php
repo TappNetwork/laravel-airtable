@@ -187,7 +187,7 @@ class AirtableApiClient implements ApiClient
                 ];
             }
 
-            $params = ['performUpsert' => (object) ['fieldsToMergeOn' => $fieldsToMergeOn], 'records' => $contents];
+            $params = ['performUpsert' => (object) ['fieldsToMergeOn' => $fieldsToMergeOn], 'records' => $contents, 'typecast' => $this->typecast];
 
             $responseData = $this->decodeResponse(
                 $this->client->patch($this->getEndpointUrl(), $params)
