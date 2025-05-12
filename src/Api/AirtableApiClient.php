@@ -46,7 +46,7 @@ class AirtableApiClient implements ApiClient
                 'Authorization' => "Bearer {$access_token}",
                 'content-type' => 'application/json',
             ],
-        ]);
+        ])->throw();
     }
 
     public function addFilter($column, $operation, $value): AirtableApiClient
@@ -187,7 +187,7 @@ class AirtableApiClient implements ApiClient
                 ];
             }
 
-            $params = ['performUpsert' => (object) ['fieldsToMergeOn' => $fieldsToMergeOn], 'records' => $contents];
+            $params = ['performUpsert' => (object) ['fieldsToMergeOn' => $fieldsToMergeOn], 'records' => $contents, 'typecast' => $this->typecast];
 
             $responseData = $this->decodeResponse(
                 $this->client->patch($this->getEndpointUrl(), $params)
