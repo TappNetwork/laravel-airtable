@@ -51,7 +51,10 @@ class AirtableApiClient implements ApiClient
 
     public function addFilter($column, $operation, $value): AirtableApiClient
     {
-        $this->filters[] = "{{$column}}{$operation}\"{$value}\"";
+        if($value[0] == "{" && $value[-1] == "}")
+            $this->filters[] = "{{$column}}{$operation}{$value}";    
+        else
+            $this->filters[] = "{{$column}}{$operation}\"{$value}\"";
 
         return $this;
     }
