@@ -312,4 +312,39 @@ class AirtableApiClient implements ApiClient
 
         return $query_params;
     }
+
+    public function deleteMultiple(array $ids)
+    {
+        $records = [];
+        $chunks = array_chunk($ids, 10);
+        foreach ($chunks as $chunk) {
+            $url = $this->getEndpointUrl();
+            $first = true;
+            foreach ($chunk as $id) {
+                if ($first) {
+                    $url .= '?records=' . $id;
+                } else {
+                    $url .= '&records=' . $id;
+                }
+
+                $first = false;
+            }
+
+            $responseData = $this->decodeResponse(
+                $this->client->delete($url)
+            );
+
+            if ($responseData->has('error')) {
+                return $responseData;
+            }
+
+            if ($responseData->has('records')) {
+                $records += $responseData->get('records');
+            }
+        }
+
+        return collect([
+            'records' => $records,
+        ]);
+    }
 }
