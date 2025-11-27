@@ -187,6 +187,11 @@ class Airtable
         return $this->api->upsert($data, $fieldsToMergeOn);
     }
 
+    public function deleteMultiple(array $recordIds)
+    {
+        return $this->api->deleteMultiple($recordIds);
+    }
+
     private function toCollection($object)
     {
         return isset($object['records']) ? collect($object['records']) : $object;
